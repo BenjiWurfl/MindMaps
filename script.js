@@ -37,7 +37,7 @@ onAuthStateChanged(auth, (user) => {
     }
   });
   */
-/*
+
   let mwd; 
   window.onload = () => {
   window.mindwired
@@ -138,10 +138,8 @@ onAuthStateChanged(auth, (user) => {
           });
         });
   }
-  */
   
   /* START: out of box code */
-  /*
   const el = document.querySelector('.ctrl');
   el.addEventListener('click', (e) => {
     const {cmd} = e.target.dataset
@@ -157,5 +155,4 @@ onAuthStateChanged(auth, (user) => {
   btnClose.addEventListener('click', () => {
     document.querySelector('.dimmer').style.display = 'none'  
   })
-  */
   /* END: out of box code */
