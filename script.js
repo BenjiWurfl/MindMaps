@@ -79,7 +79,7 @@ onAuthStateChanged(auth, (user) => {
                 view: {x: 160, y: 80}
               },
               {
-                model: { text: "Subtopic B" },
+                model: { text: "Subtopic A" },
                 view: { x: -140, y: -80 },
                 subs: [
                   {
@@ -115,7 +115,7 @@ onAuthStateChanged(auth, (user) => {
                 ],
               },
               {
-                model: { text: "C" },
+                model: { text: "Subtopic C" },
                 view: { x: 140, y: -80 },
                 subs: [
                   {
