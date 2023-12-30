@@ -1,4 +1,3 @@
-/*
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -18,20 +17,23 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+function redirectToLogin() {
+    window.location.href = 'https://benjiwurfl.github.io/Login/';
+  }
+
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
     if (user) {
       // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
       console.log("User is signed in with UID:", user.uid);
       // Hier können Sie Funktionen aufrufen, die die UID verwenden.
-      loadUserEvents();
+      //loadUserEvents();
     } else {
       // Kein Benutzer ist angemeldet.
       console.log("No user is signed in.");
       redirectToLogin();
     }
   });
-  */
 
 function init() {
     // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
