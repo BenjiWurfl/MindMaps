@@ -5,7 +5,8 @@
   <title>MindWired: Mind Map Generator Example</title>
   <link href="https://www.cssscript.com/demo/sticky.css" rel="stylesheet" type="text/css">
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@mind-wired/core/dist/mind-wired.css'>
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'><link rel="stylesheet" href="./style.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
+<link rel="stylesheet" href="style.css">
 <style>
   html,* { font-family: 'Inter'; box-sizing: border-box; }
 body { background-color: #fafafa; line-height:1.6;}
@@ -17,28 +18,6 @@ canvas { background-color: #fafafa; }
 
 </head>
 <body>   
-  <!--
-  <div id="css-script-menu">
-  <div class="css-script-center">
-    <ul>
-      <li><a href="https://www.cssscript.com/mac-magnify-mouse-hover/">Download</a></li>
-      <li><a href="https://www.cssscript.com/">Back To CSS Script</a></li>
-    </ul>
-    <div class="css-script-ads"><div id="carbon-block"></div>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2783044520727903"
-     crossorigin="anonymous"></script>
- CSSScript Demo Page 
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-2783044520727903"
-     data-ad-slot="3025259193"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></div>
-    <div class="css-script-clear"></div>
-  </div>
-</div>
--->
 <div class="container">
 <h1>MindWired: Mind Map Generator Example</h1>
 <p class="lead">A powerful and open-source tool for drawing dynamic, interactive mindmaps on an HTML canvas element.</p>
@@ -72,7 +51,8 @@ canvas { background-color: #fafafa; }
   </div>
 </div>
 </div>
-  <script src='https://cdn.jsdelivr.net/npm/@mind-wired/core/dist/mind-wired.js'></script><script  src="./script.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/@mind-wired/core/dist/mind-wired.js'></script>
+  <script type="module" src="script.js"></script>
 <script>
 try {
   fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function(response) {

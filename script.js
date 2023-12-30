@@ -1,4 +1,3 @@
-/*
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -36,7 +35,6 @@ onAuthStateChanged(auth, (user) => {
       redirectToLogin();
     }
   });
-  */
 
   let mwd; 
   window.onload = () => {
@@ -66,7 +64,7 @@ onAuthStateChanged(auth, (user) => {
             subs: [
               {
                 model: {
-                  text: "Mindmap Javascript Library\n(with memo schema)",
+                  text: "Here is the right Place for some Notes!",
                   schema: 'memo'
                 },
                 view: {x: 0, y: -150, edge: {
