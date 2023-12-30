@@ -1,3 +1,4 @@
+/*
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -30,6 +31,7 @@ onAuthStateChanged(auth, (user) => {
       redirectToLogin();
     }
   });
+  */
 
 function init() {
     // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
