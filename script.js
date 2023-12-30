@@ -16,6 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+let myDiagram;
 
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
