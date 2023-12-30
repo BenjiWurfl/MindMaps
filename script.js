@@ -49,7 +49,7 @@ onAuthStateChanged(auth, (user) => {
           mwd.nodes({
             model: {
               type: "text",
-              text: "Mind-Wired",
+              text: "Thinkwise",
             },
             view: {
               x: 0,
@@ -75,59 +75,59 @@ onAuthStateChanged(auth, (user) => {
                 
               },
               {
-                model: {text: "Configuration"},
+                model: {text: "Subtopic D"},
                 view: {x: 160, y: 80}
               },
               {
-                model: { text: "Node" },
+                model: { text: "Subtopic B" },
                 view: { x: -140, y: -80 },
                 subs: [
                   {
-                    model: { text: "text" },
+                    model: { text: "text1" },
                     view: { x: -100, y: -40 }
                   },
                   {
-                    model: { text: "badge" },
+                    model: { text: "text2" },
                     view: { x: -100, y: 0 }
                   },
                   {
-                    model: { text: "thumnail" },
+                    model: { text: "text3" },
                     view: { x: -100, y: 40 }
                   },
                 ],
               },
               {
-                model: { text: "Edge" },
+                model: { text: "Subtopic B" },
                 view: { x: -140, y: 80 },
                 subs: [
                   {
-                    model: { text: "LINE" },
+                    model: { text: "text1" },
                     view: { x: -100, y: -40 }
                   },
                   {
-                    model: { text: "mustache_lr" },
+                    model: { text: "text2" },
                     view: { x: -100, y: 0 }
                   },
                   {
-                    model: { text: "mustache_tb" },
+                    model: { text: "text3" },
                     view: { x: -100, y: 40 }
                   },
                 ],
               },
               {
-                model: { text: "Layout" },
+                model: { text: "C" },
                 view: { x: 140, y: -80 },
                 subs: [
                   {
-                    model: { text: "DEFAULT" },
+                    model: { text: "text1" },
                     view: { x: 100, y: -40 }
                   },
                   {
-                    model: { text: "X-AXIS" },
+                    model: { text: "text2" },
                     view: { x: 100, y: 0 }
                   },
                   {
-                    model: { text: "Y-AXIS" },
+                    model: { text: "text3" },
                     view: { x: 100, y: 40 }
                   },
                 ],
