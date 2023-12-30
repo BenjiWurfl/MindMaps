@@ -1,3 +1,36 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  
+const firebaseConfig = {
+  apiKey: "AIzaSyBe7d9bllq8RnmI6xxEBk3oub3qogPT2aM",
+  authDomain: "thinkwise-c7673.firebaseapp.com",
+  databaseURL: "https://thinkwise-c7673-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "thinkwise-c7673",
+  storageBucket: "thinkwise-c7673.appspot.com",
+  messagingSenderId: "37732571551",
+  appId: "1:37732571551:web:9b90a849ac5454f33a85aa",
+  measurementId: "G-8957WM4SB7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Authentifizierungsstatus beibehalten
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
+      console.log("User is signed in with UID:", user.uid);
+      // Hier können Sie Funktionen aufrufen, die die UID verwenden.
+      loadUserEvents();
+    } else {
+      // Kein Benutzer ist angemeldet.
+      console.log("No user is signed in.");
+      redirectToLogin();
+    }
+  });
+
 function init() {
     // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
     // For details, see https://gojs.net/latest/intro/buildingObjects.html
