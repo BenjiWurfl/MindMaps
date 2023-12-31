@@ -1,99 +1,124 @@
-/* General Styles */
+/* START: out of box css*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 html, body {
-    font-size: 14px; /* Adjusted for better readability */
-    font-family: 'Poppins', sans-serif;
-    background-color: #fafafa; /* Lighter background for contrast */
-    color: #333; /* Slightly darker font color for better readability */
-  }
-  
-  h3 {
-    font-weight: 600; /* Make headers a bit bolder */
-    font-size: 1.75rem; /* Increase header size */
-  }
-  
-  .wrapper {
+    font-size: 16px; /* Adjusting base font size for better legibility */
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif; /* Using Inter for overall font */
+}
+
+.wrapper {
     position: relative;
-  }
-  
-  /* Help Tips */
-  .help .tip > div {
-    padding: 8px; /* More padding for better touch */
-    .key {
-      background-color: #f0f0f0; /* Lighter background for keys */
-      color: #555; /* Slightly darker color for contrast */
-      padding: 6px 8px; /* More padding for a better look */
-      border-radius: 6px; /* Rounded corners for keys */
+}
+
+.dimmer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dimmer .output {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* END: out of box css */
+
+#mmap-root {
+    background-color: #fff; /* White background for the mind map area */
+    border-radius: 8px; /* Rounded corners for the mind map area */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Adding subtle shadow for depth */
+    overflow: hidden; /* Ensures no overflow */
+    margin: 2rem 0; /* Add margin for visual spacing from container */
+}
+
+[data-mind-wired-viewport] {
+    .mwd-body.level-0 {
+        background-color: #4F46E5; /* Primary color for root node */
+        color: #fff; /* White text for contrast */
+        font-weight: 600; /* Making the root node text bold */
+        padding: 0.75rem 1.5rem; /* More padding for the root node */
     }
-  }
-  
-  /* Dimmer Box */
-  .dimmer {
-    background-color: rgba(0, 0, 0, 0.5); /* More transparency for dimmer */
-  }
-  
-  .dimmer .output {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Box shadow for pop-up effect */
-  }
-  
-  /* Mindmap Styles */
-  #mmap-root {
-    background-color: #ffffff; /* White background for the mind map area */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Box shadow for depth */
-  }
-  
-  /* Node Styles */
-  [data-mind-wired-viewport] .mwd-body {
-    border-radius: 8px; /* Rounded corners for all nodes */
-    padding: 8px; /* Uniform padding for all nodes */
-    margin: 4px; /* Space out nodes */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Consistent shadow for depth */
-  }
-  
-  .mwd-body.level-0 {
-    background-color: #f0f8ff; /* Light blue background for root node */
-    font-size: 1.4rem; /* Larger font size for root node */
-    color: #034375; /* Dark blue font color for root node */
-  }
-  
-  .mwd-body.level-1 {
-    background-color: #e6e6e6; /* Light grey for first-level nodes */
-    font-size: 1.2rem; /* Adjusted font size for first-level nodes */
-  }
-  
-  .mwd-body.level-2 {
-    background-color: #ede7f6; /* Light purple for second-level nodes */
-    font-size: 1.1rem; /* Adjusted font size for second-level nodes */
-  }
-  
-  .mwd-node .mwd-body.memo {
-    background-color: #fffde7; /* Light yellow for memo nodes */
-    border: 1px solid #fff59d; /* Slightly darker border for memo nodes */
-  }
-  
-  /* Interaction Styles */
-  .mwd-body:hover {
-    border-color: #4f46e5; /* Highlight border on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
-  }
-  
-  .mwd-body:active {
-    background-color: #d1d9ff; /* Light highlight for active nodes */
-  }
-  
-  /* Export Button */
-  .ctrl .btn {
-    background-color: #4f46e5; /* Primary button color */
-    color: #fff; /* Button text color */
-    padding: 10px 15px; /* Padding for button */
-    border-radius: 6px; /* Rounded corners for button */
-    font-size: 1rem; /* Font size for button */
-    transition: background-color 0.3s; /* Transition for button feedback */
-  }
-  
-  .ctrl .btn:hover {
-    background-color: #3c3f9f; /* Darker color on hover */
-  }
-  
-  .ctrl .btn:active {
-    background-color: #2c2f7f; /* Even darker color on active state */
-  }  
+
+    .mwd-body.level-1 {
+        background-color: #e5f6ff; /* Light blue background for first level nodes */
+        border: none; /* Removing border */
+        padding: 0.5rem 1rem; /* Adjusting padding */
+        margin: 0.25rem; /* Adding margin between nodes */
+        box-shadow: 0 1px 5px rgba(0,0,0,0.1); /* Subtle shadow for the nodes */
+    }
+
+    .mwd-body.level-2 {
+        background-color: #f0f0f0; /* Even lighter background for second level */
+        color: #333; /* Darker text color for readability */
+        font-weight: 400; /* Normal font weight */
+    }
+
+    .mwd-node .mwd-body.memo {
+        background-color: #fffc89; /* Yellow background for memos */
+        padding: 0.25rem 0.5rem; /* Smaller padding for memo nodes */
+        font-style: italic; /* Italic font style for memos */
+        border-radius: 4px; /* Rounded corners for memo nodes */
+    }
+}
+
+/* Custom styles for buttons and container */
+.btn {
+    padding: 0.75rem 1.5rem;
+    background-color: #4F46E5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease; /* Smooth transition for button hover effect */
+}
+
+.btn:hover {
+    background-color: #3730A3; /* Darker shade on hover */
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto; /* Centering the container */
+    padding: 2rem; /* Adding padding to the container */
+}
+
+.lead {
+    font-size: 1.25rem; /* Adjusting lead paragraph font size */
+    color: #333; /* Dark grey color for text */
+    margin-bottom: 1.5rem; /* Space below the lead paragraph */
+}
+
+canvas {
+    background-color: #fff; /* White background for canvas */
+}
+
+/* Additional responsive adjustments */
+@media (max-width: 768px) {
+    html, body {
+        font-size: 14px; /* Smaller font size on mobile devices */
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    #mmap-root {
+        margin: 1rem 0;
+    }
+}
