@@ -1,127 +1,99 @@
-/* START: out of box css*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+/* General Styles */
 html, body {
-  font-size: 12px;
-  box-sizing: border-box;
-}
-h3 {
-  font-weight: 400;
-  font-size: 1.5rem;
-}
-.wrapper {
-  position: relative;
-  .logo {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
-    padding: 8px;
-    i {
-      font-size: 2.25rem;
-    }
-    .link {
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: #444;
-      background-color: white;
-      &:visit {
-        text-decoration: none;
-      }
+    font-size: 14px; /* Adjusted for better readability */
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafafa; /* Lighter background for contrast */
+    color: #333; /* Slightly darker font color for better readability */
+  }
+  
+  h3 {
+    font-weight: 600; /* Make headers a bit bolder */
+    font-size: 1.75rem; /* Increase header size */
+  }
+  
+  .wrapper {
+    position: relative;
+  }
+  
+  /* Help Tips */
+  .help .tip > div {
+    padding: 8px; /* More padding for better touch */
+    .key {
+      background-color: #f0f0f0; /* Lighter background for keys */
+      color: #555; /* Slightly darker color for contrast */
+      padding: 6px 8px; /* More padding for a better look */
+      border-radius: 6px; /* Rounded corners for keys */
     }
   }
-  .help {
-    position: absolute;
-    top:16px;
-    right: 16px;
-    padding: 8px;
-    z-index: 1;
-    display: table;
-    font-size: 1.1rem;
-    .tip {
-      display: table-row;
-      margin-bottom: 2px;
-      > div {
-        display: table-cell;
-        text-align: right;
-        padding: 4px;
-        border: 1px solid transparent;
-        &.desc {
-          text-align: left;
-        }
-        .key {
-          background-color: #eee;
-          color: #444;
-          padding: 2px 4px;
-          border: 4px;
-          border-radius: 4px;
-        }
-      }
-    }
+  
+  /* Dimmer Box */
+  .dimmer {
+    background-color: rgba(0, 0, 0, 0.5); /* More transparency for dimmer */
   }
-}
-.dimmer {
-  position: fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background-color: #0000004d;
-  z-index: 50;
-  .output {
-    position: absolute;
-    top:50%;
-    left:50%;
-    width: 400px;
-    transform: translate(-50%, -50%);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    textarea {
-      height: 300px;
-      resize: none;
-    }
-    button {
-      width: 100%;
-    }
+  
+  .dimmer .output {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Box shadow for pop-up effect */
   }
-}
-/* END: out of box css */
-
-#mmap-root {
-  background-color: #efefef;
-  display: flex;
-  justify-content: center;
-  padding: 16px;
-  font-family: 'Poppins', sans-serif;
-}  
-[data-mind-wired-viewport] {
+  
+  /* Mindmap Styles */
+  #mmap-root {
+    background-color: #ffffff; /* White background for the mind map area */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Box shadow for depth */
+  }
+  
+  /* Node Styles */
+  [data-mind-wired-viewport] .mwd-body {
+    border-radius: 8px; /* Rounded corners for all nodes */
+    padding: 8px; /* Uniform padding for all nodes */
+    margin: 4px; /* Space out nodes */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Consistent shadow for depth */
+  }
+  
   .mwd-body.level-0 {
-    border: 1px solid #777;
-    border-radius: 4px;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 2px;
+    background-color: #f0f8ff; /* Light blue background for root node */
+    font-size: 1.4rem; /* Larger font size for root node */
+    color: #034375; /* Dark blue font color for root node */
   }
+  
   .mwd-body.level-1 {
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: #e5f6ff;
-    color: #034375;
+    background-color: #e6e6e6; /* Light grey for first-level nodes */
+    font-size: 1.2rem; /* Adjusted font size for first-level nodes */
   }
+  
   .mwd-body.level-2 {
-    font-size: 0.9rem;
-    color: #9b175a;
+    background-color: #ede7f6; /* Light purple for second-level nodes */
+    font-size: 1.1rem; /* Adjusted font size for second-level nodes */
   }
   
   .mwd-node .mwd-body.memo {
-    font-size: 0.9rem;
-    background-color: #fffc89;
-    font-style: italic;
-    padding: 4px;
+    background-color: #fffde7; /* Light yellow for memo nodes */
+    border: 1px solid #fff59d; /* Slightly darker border for memo nodes */
   }
-}
+  
+  /* Interaction Styles */
+  .mwd-body:hover {
+    border-color: #4f46e5; /* Highlight border on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  .mwd-body:active {
+    background-color: #d1d9ff; /* Light highlight for active nodes */
+  }
+  
+  /* Export Button */
+  .ctrl .btn {
+    background-color: #4f46e5; /* Primary button color */
+    color: #fff; /* Button text color */
+    padding: 10px 15px; /* Padding for button */
+    border-radius: 6px; /* Rounded corners for button */
+    font-size: 1rem; /* Font size for button */
+    transition: background-color 0.3s; /* Transition for button feedback */
+  }
+  
+  .ctrl .btn:hover {
+    background-color: #3c3f9f; /* Darker color on hover */
+  }
+  
+  .ctrl .btn:active {
+    background-color: #2c2f7f; /* Even darker color on active state */
+  }  
