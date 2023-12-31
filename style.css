@@ -47,14 +47,13 @@ h1 {
 
 /* Stile für die MindMap und den Canvas */
 #mmap-root {
-    position: relative; /* Relative Positionierung für das Elternelement des Canvas */
-    display: flex;
-    justify-content: center;
-    background-color: #ffffff;
-    border: 1px solid #E2E8F0;
-    padding: 20px;
-    margin-bottom: 20px;
-    overflow: hidden; /* Stellt sicher, dass nichts über den Rand hinausgeht */
+  position: relative; /* Wichtig für die absolute Positionierung der Kinderelemente */
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #E2E8F0;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 canvas {
@@ -101,34 +100,32 @@ canvas {
   }
 }
 
-/* Stile für die Anleitungstexte innerhalb der MindMap */
-.wrapper .help {
+/* Stile für die Anleitungstexte innerhalb des Canvas */
+.help {
     position: absolute;
-    top: 10px; /* Abstand von oben */
-    right: 10px; /* Abstand von rechts */
+    top: 10px; /* Abstand von oben innerhalb des Canvas */
+    right: 10px; /* Abstand von rechts innerhalb des Canvas */
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    background-color: rgba(255, 255, 255, 0.9);
+    align-items: flex-end; /* Ausrichtung am rechten Rand */
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 5;
+    z-index: 10; /* Stellt sicher, dass es über dem Canvas liegt */
 }
-
-.help .tip {
-  display: inline-block;
-  margin: 0 10px;
-  color: #4A5568;
-}
-
-.help .key {
-  background-color: #EBF4FF;
-  color: #2D3748;
-  padding: 3px 6px;
-  border-radius: 5px;
-  font-weight: bold;
-}
+  
+  .help .tip {
+    margin-bottom: 4px; /* Abstand zwischen den Tipps */
+  }
+  
+  .help .key {
+    background-color: #EBF4FF;
+    color: #2D3748;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
 
 /* Zusätzliche Stile für Dialoge und dimmer */
 .dimmer {
@@ -153,13 +150,13 @@ canvas {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.output textarea {
+.output .textarea {
   width: 100%;
   height: 200px;
   margin-bottom: 10px;
 }
 
-.output button {
+.output .button {
   padding: 10px 20px;
   background-color: #68D391;
   color: white;
