@@ -1,124 +1,168 @@
-/* START: out of box css*/
+/* Globale Stile */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 html, body {
-    font-size: 16px; /* Adjusting base font size for better legibility */
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif; /* Using Inter for overall font */
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
-.wrapper {
-    position: relative;
+/* Stile für den Hauptcontainer und Buttons */
+.container {
+  max-width: 960px;
+  margin: 50px auto;
+  text-align: center;
 }
 
-.dimmer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 50;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.dimmer .output {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-/* END: out of box css */
-
-#mmap-root {
-    background-color: #fff; /* White background for the mind map area */
-    border-radius: 8px; /* Rounded corners for the mind map area */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Adding subtle shadow for depth */
-    overflow: hidden; /* Ensures no overflow */
-    margin: 2rem 0; /* Add margin for visual spacing from container */
-}
-
-[data-mind-wired-viewport] {
-    .mwd-body.level-0 {
-        background-color: #4F46E5; /* Primary color for root node */
-        color: #fff; /* White text for contrast */
-        font-weight: 600; /* Making the root node text bold */
-        padding: 0.75rem 1.5rem; /* More padding for the root node */
-    }
-
-    .mwd-body.level-1 {
-        background-color: #e5f6ff; /* Light blue background for first level nodes */
-        border: none; /* Removing border */
-        padding: 0.5rem 1rem; /* Adjusting padding */
-        margin: 0.25rem; /* Adding margin between nodes */
-        box-shadow: 0 1px 5px rgba(0,0,0,0.1); /* Subtle shadow for the nodes */
-    }
-
-    .mwd-body.level-2 {
-        background-color: #f0f0f0; /* Even lighter background for second level */
-        color: #333; /* Darker text color for readability */
-        font-weight: 400; /* Normal font weight */
-    }
-
-    .mwd-node .mwd-body.memo {
-        background-color: #fffc89; /* Yellow background for memos */
-        padding: 0.25rem 0.5rem; /* Smaller padding for memo nodes */
-        font-style: italic; /* Italic font style for memos */
-        border-radius: 4px; /* Rounded corners for memo nodes */
-    }
-}
-
-/* Custom styles for buttons and container */
 .btn {
-    padding: 0.75rem 1.5rem;
-    background-color: #4F46E5;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease; /* Smooth transition for button hover effect */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4F46E5;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
 }
 
 .btn:hover {
-    background-color: #3730A3; /* Darker shade on hover */
+  background-color: #3730A3;
 }
 
-.container {
-    max-width: 960px;
-    margin: 0 auto; /* Centering the container */
-    padding: 2rem; /* Adding padding to the container */
+/* Stile für die Überschriften und Beschreibungstext */
+h1 {
+  font-size: 2rem;
+  color: #1A202C;
 }
 
 .lead {
-    font-size: 1.25rem; /* Adjusting lead paragraph font size */
-    color: #333; /* Dark grey color for text */
-    margin-bottom: 1.5rem; /* Space below the lead paragraph */
+  font-size: 1.2rem;
+  color: #4A5568;
+}
+
+/* Stile für die MindMap und die Canvas */
+#mmap-root {
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #E2E8F0;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 canvas {
-    background-color: #fff; /* White background for canvas */
+  background-color: #ffffff;
 }
 
-/* Additional responsive adjustments */
-@media (max-width: 768px) {
-    html, body {
-        font-size: 14px; /* Smaller font size on mobile devices */
-    }
+/* Spezifische Stile für die MindMap-Elemente */
+[data-mind-wired-viewport] {
+  .mwd-body.level-0 {
+    border: 2px solid #CBD5E0;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    color: #2D3748;
+    padding: 5px 10px;
+    background-color: #EBF4FF;
+  }
 
-    .container {
-        padding: 1rem;
-    }
+  .mwd-body.level-1 {
+    border-radius: 8px;
+    font-size: 1.1rem;
+    background-color: #FEEBC8;
+    color: #C05621;
+  }
 
-    .btn {
-        padding: 0.5rem 1rem;
-    }
+  .mwd-body.level-2 {
+    font-size: 1rem;
+    background-color: #FEFCBF;
+    color: #B7791F;
+  }
 
-    #mmap-root {
-        margin: 1rem 0;
-    }
+  .mwd-node .mwd-body.memo {
+    background-color: #C6F6D5;
+    color: #2F855A;
+    font-style: normal;
+    padding: 4px 8px;
+  }
+}
+
+/* Stile für die Anleitungstexte innerhalb der MindMap */
+.wrapper .help {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.help .tip {
+  margin: 0 5px;
+  color: #4A5568;
+}
+
+.help .key {
+  background-color: #EBF4FF;
+  color: #2D3748;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Zusätzliche Stile für Dialoge und dimmer */
+.dimmer {
+  display: none; /* Standardmäßig ausblenden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.dimmer .output {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.output textarea {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.output button {
+  padding: 10px 20px;
+  background-color: #68D391;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.output button:hover {
+  background-color: #48BB78;
+}
+
+/* Button um den Dialog zu schließen */
+[data-cmd="close"] {
+  background-color: #F56565;
+}
+
+[data-cmd="close"]:hover {
+  background-color: #E53E3E;
 }
