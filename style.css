@@ -89,22 +89,33 @@ canvas {
     font-style: normal;
     padding: 4px 8px;
   }
+
+  .mwd-body.level-3 {
+    font-size: 0.85rem;
+    background-color: #BEE3F8;
+    color: #2B6CB0;
+    padding: 3px 6px;
+    border-radius: 8px;
+  }
 }
 
 /* Stile für die Anleitungstexte innerhalb der MindMap */
 .wrapper .help {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  display: block;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 5;
 }
 
 .help .tip {
-  margin: 0 5px;
+  display: inline-block;
+  margin: 0 10px;
   color: #4A5568;
 }
 
