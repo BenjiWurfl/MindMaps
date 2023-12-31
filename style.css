@@ -45,14 +45,16 @@ h1 {
   color: #4A5568;
 }
 
-/* Stile für die MindMap und die Canvas */
+/* Stile für die MindMap und den Canvas */
 #mmap-root {
-  display: flex;
-  justify-content: center;
-  background-color: #ffffff;
-  border: 1px solid #E2E8F0;
-  padding: 20px;
-  margin-bottom: 20px;
+    position: relative; /* Relative Positionierung für das Elternelement des Canvas */
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid #E2E8F0;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Stellt sicher, dass nichts über den Rand hinausgeht */
 }
 
 canvas {
@@ -101,33 +103,32 @@ canvas {
 
 /* Stile für die Anleitungstexte innerhalb der MindMap */
 .wrapper .help {
+    position: absolute;
+    top: 10px; /* Abstand von oben */
+    right: 10px; /* Abstand von rechts */
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 20px; /* oben rechts positionieren */
-    right: 20px; /* ein wenig Abstand zum Rand */
-    align-items: flex-start; /* Text linksbündig ausrichten */
+    align-items: flex-start;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 5;
 }
-  
-  .help .tip {
-    display: block; /* Für jedes Element einen eigenen Block machen */
-    margin: 5px 0; /* Etwas Abstand zwischen den Zeilen */
-    color: #4A5568;
-  }
-  
-  .help .key {
-    background-color: #EBF4FF;
-    color: #2D3748;
-    padding: 3px 6px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-right: 5px; /* Etwas Abstand zum Beschreibungstext */
-  }
+
+.help .tip {
+  display: inline-block;
+  margin: 0 10px;
+  color: #4A5568;
+}
+
+.help .key {
+  background-color: #EBF4FF;
+  color: #2D3748;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-weight: bold;
+}
 
 /* Zusätzliche Stile für Dialoge und dimmer */
 .dimmer {
