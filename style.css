@@ -48,12 +48,16 @@ h1 {
 
     .help {
         position: absolute;
-        top: 16px;
-        right: 16px;
+        top: 40px; /* Abstand nach unten, entsprechend der Höhe des Buttons anpassen */
+        right: 0;
         padding: 8px;
-        z-index: 1;
-        display: none;
-        font-size: 1.1rem;
+        z-index: 100; /* Höherer z-Index als der action-button, damit es darüber schwebt */
+        background-color: white; /* Hintergrund weiß oder passend zum Design */
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Einen leichten Schatten für den Schwebeeffekt */
+        visibility: hidden; /* Standardmäßig unsichtbar */
+        opacity: 0;
+        transition: visibility 0.3s, opacity 0.3s ease-in-out;
 
         .tip {
             display: table-row;
@@ -207,7 +211,7 @@ canvas {
 
 /* START: Button für Bedienungshinweise */
 .action-button {
-    position: absolute;
+    position: relative;
     top: 16px;
     right: 16px;
     z-index: 10; /* Höherer z-Index als .help */
@@ -228,5 +232,6 @@ canvas {
 }
 
 .action-button:hover + .help {
-    display: table; /* Zeige die Bedienungshinweise beim Hover */
+    visibility: visible; /* Sichtbar machen, wenn der Button gehovert wird */
+    opacity: 1; /* Übergang zu voller Deckkraft */
 }
