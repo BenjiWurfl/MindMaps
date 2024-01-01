@@ -67,3 +67,75 @@ try {
 </script>
 </body>
 </html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindWired: Mind Map Generator Example</title>
+  <link href="https://www.cssscript.com/demo/sticky.css" rel="stylesheet" type="text/css">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@mind-wired/core/dist/mind-wired.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>   
+  <div class="container">
+    <h1>Thinkwise: Mind Map</h1>
+    <p class="lead">This is our powerful tool for drawing dynamic, interactive mindmaps</p>
+    <div class="ctrl"><button data-cmd="export" class="btn">EXPORT</button></div>
+    <div id="mmap-root"></div>
+  </div>
+
+  <!-- Schwebender Aktionsbutton für Bedienungshinweise -->
+  <div class="fab-container">
+    <div class="fab-button">
+      <i class="fas fa-info"></i>
+      <div class="fab-content">
+        <div class="tip"><span class="key">Enter</span> - new sibling node</div>
+        <div class="tip"><span class="key">Shift+Enter</span> - new child node</div>
+        <div class="tip"><span class="key">Space</span> - start editing</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dimmer" style="display: none;">
+    <div class="output">
+      <div class="usage"><pre>
+    window.mindwired
+      .init(...)
+      .then(mwd => {
+          const node = JSON.parse(jsonText);
+          mwd.nodes(node);
+      })
+      </pre></div>
+      <textarea></textarea>
+      <button data-cmd="close">close</button>
+    </div>   
+  </div>
+  <script src='https://cdn.jsdelivr.net/npm/@mind-wired/core/dist/mind-wired.js'></script>
+  <script type="module" src="script.js"></script>
+  <script>
+    try {
+      fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function(response) {
+        return true;
+      }).catch(function(e) {
+        var carbonScript = document.createElement("script");
+        carbonScript.src = "//cdn.carbonads.com/carbon.js?serve=CE7DC2JW&placement=wwwcssscriptcom";
+        carbonScript.id = "_carbonads_js";
+        document.getElementById("carbon-block").appendChild(carbonScript);
+      });
+    } catch (error) {
+      console.log(error);
+      }
+      </script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
+      <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LLWL5N9CSM');
+      </script>
+</body>
+</html>

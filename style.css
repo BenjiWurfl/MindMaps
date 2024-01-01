@@ -204,3 +204,58 @@ h1 {
 canvas {
     background-color: #ffffff;
 }
+
+
+/* Zusätzliche Stile für den schwebenden Aktionsbutton */
+.fab-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+  }
+  
+  .fab-button {
+    background-color: #4F46E5;
+    color: #fff;
+    border-radius: 50%;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .fab-button:hover .fab-content {
+    display: block;
+    transform: translateX(-100%);
+  }
+  
+  .fab-content {
+    display: none;
+    position: absolute;
+    right: 60px; /* Button-Größe plus Abstand */
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    pointer-events: none; /* Damit der Hover-Effekt nicht verschwindet, wenn die Maus über die Inhalte geht */
+  }
+  
+  /* Anpassungen für die Tip-Elemente innerhalb des Buttons */
+  .fab-content .tip {
+    margin: 0;
+    padding: 0;
+    display: block;
+    color: #4A5568;
+  }
+  
+  .fab-content .key {
+    background-color: #EBF4FF;
+    color: #2D3748;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px 0;
+  }  
