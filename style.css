@@ -1,206 +1,184 @@
-/* Globale Stile */
+/* START: out of box css*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
-html, body {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  box-sizing: border-box;
-  background-color: #fafafa;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
+html,
+body {
+    font-size: 12px;
+    box-sizing: border-box;
 }
 
-/* Stile für den Hauptcontainer und Buttons */
-.container {
-  max-width: 960px;
-  margin: 50px auto;
-  text-align: center;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4F46E5;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  outline: none;
-  transition: background-color 0.3s;
-}
-
-.btn:hover {
-  background-color: #3730A3;
-}
-
-/* Stile für die Überschriften und Beschreibungstext */
-h1 {
-  font-size: 2rem;
-  color: #1A202C;
-}
-
-.lead {
-  font-size: 1.2rem;
-  color: #4A5568;
-}
-
-/* Stile für die MindMap und den Canvas */
-#mmap-root {
-  position: relative; /* Wichtig für die absolute Positionierung der Kinderelemente */
-  display: flex;
-  justify-content: center;
-  background-color: #ffffff;
-  border: 1px solid #E2E8F0;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-canvas {
-  background-color: #ffffff;
-}
-
-/* Spezifische Stile für die MindMap-Elemente */
-[data-mind-wired-viewport] {
-  .mwd-body.level-0 {
-    border: 2px solid #CBD5E0;
-    border-radius: 10px;
-    font-size: 1.2rem;
-    color: #2D3748;
-    padding: 5px 10px;
-    background-color: #EBF4FF;
-  }
-
-  .mwd-body.level-1 {
-    border-radius: 8px;
-    font-size: 1.1rem;
-    background-color: #FEEBC8;
-    color: #C05621;
-  }
-
-  .mwd-body.level-2 {
-    font-size: 1rem;
-    background-color: #FEFCBF;
-    color: #B7791F;
-  }
-
-  .mwd-node .mwd-body.memo {
-    background-color: #C6F6D5;
-    color: #2F855A;
-    font-style: normal;
-    padding: 4px 8px;
-  }
-
-  .mwd-body.level-3 {
-    font-size: 0.85rem;
-    background-color: #BEE3F8;
-    color: #2B6CB0;
-    padding: 3px 6px;
-    border-radius: 8px;
-  }
-}
-
-/* Stile für die Anleitungstexte innerhalb des Canvas */
-.help {
-    position: absolute;
-    top: 10px; /* Abstand von oben innerhalb des Canvas */
-    right: 10px; /* Abstand von rechts innerhalb des Canvas */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Ausrichtung am rechten Rand */
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 10; /* Stellt sicher, dass es über dem Canvas liegt */
-}
-  
-  .help .tip {
-    margin-bottom: 4px; /* Abstand zwischen den Tipps */
-  }
-  
-  .help .key {
-    background-color: #EBF4FF;
-    color: #2D3748;
-    padding: 3px 6px;
-    border-radius: 5px;
-    font-weight: bold;
-  }
-
-/* Zusätzliche Stile für Dialoge und dimmer */
-.dimmer {
-  display: none; /* Standardmäßig ausblenden */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.dimmer .output {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.output .textarea {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 10px;
-}
-
-.output .button {
-  padding: 10px 20px;
-  background-color: #68D391;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.output button:hover {
-  background-color: #48BB78;
-}
-
-/* Button um den Dialog zu schließen */
-[data-cmd="close"] {
-  background-color: #F56565;
-}
-
-[data-cmd="close"]:hover {
-  background-color: #E53E3E;
+h3 {
+    font-weight: 400;
+    font-size: 1.5rem;
 }
 
 .wrapper {
     position: relative;
+
     .logo {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      column-gap: 8px;
-      padding: 8px;
-      i {
-        font-size: 2.25rem;
-      }
-      .link {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        column-gap: 8px;
+        padding: 8px;
+
+        i {
+            font-size: 2.25rem;
+        }
+
+        .link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #444;
+            background-color: white;
+
+            &:visit {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .help {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 8px;
+        z-index: 1;
+        display: table;
+        font-size: 1.1rem;
+
+        .tip {
+            display: table-row;
+            margin-bottom: 2px;
+
+            >div {
+                display: table-cell;
+                text-align: right;
+                padding: 4px;
+                border: 1px solid transparent;
+
+                &.desc {
+                    text-align: left;
+                }
+
+                .key {
+                    background-color: #eee;
+                    color: #444;
+                    padding: 2px 4px;
+                    border: 4px;
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+}
+
+.dimmer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #0000004d;
+    z-index: 50;
+
+    .output {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        transform: translate(-50%, -50%);
+        padding: 16px;
         display: flex;
         flex-direction: column;
-        text-decoration: none;
-        color: #444;
         background-color: white;
-        &:visit {
-          text-decoration: none;
+
+        textarea {
+            height: 300px;
+            resize: none;
         }
-      }
+
+        button {
+            width: 100%;
+        }
     }
+}
+
+/* END: out of box css */
+
+#mmap-root {
+    background-color: #efefef;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
+[data-mind-wired-viewport] {
+    .mwd-body.level-0 {
+        border: 1px solid #777;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 2px;
+    }
+
+    .mwd-body.level-1 {
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: #e5f6ff;
+        color: #034375;
+    }
+
+    .mwd-body.level-2 {
+        font-size: 0.9rem;
+        color: #9b175a;
+    }
+
+    .mwd-node .mwd-body.memo {
+        font-size: 0.9rem;
+        background-color: #fffc89;
+        font-style: italic;
+        padding: 4px;
+    }
+}
+
+/* CSS Teil von der html */
+
+html,
+* {
+    font-family: 'Inter';
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fafafa;
+    line-height: 1.6;
+}
+
+.lead {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.container {
+    margin: 150px auto;
+    max-width: 960px;
+}
+
+.btn {
+    padding: 1.25rem;
+    border: 0;
+    border-radius: 3px;
+    background-color: #4F46E5;
+    color: #fff;
+    cursor: pointer;
+}
+
+canvas {
+    background-color: #fafafa;
 }
