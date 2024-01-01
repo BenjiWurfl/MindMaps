@@ -52,7 +52,7 @@ h1 {
         right: 16px;
         padding: 8px;
         z-index: 1;
-        display: table;
+        display: none;
         font-size: 1.1rem;
 
         .tip {
@@ -203,4 +203,30 @@ h1 {
 
 canvas {
     background-color: #ffffff;
+}
+
+/* START: Button für Bedienungshinweise */
+.action-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2; /* Höherer z-Index als .help */
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4F46E5;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+    display: none; /* Standardmäßig ausgeblendet */
+}
+
+.action-button:hover {
+    background-color: #3730A3;
+}
+
+.action-button:hover + .help {
+    display: table; /* Zeige die Bedienungshinweise beim Hover */
 }
