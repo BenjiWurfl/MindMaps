@@ -1,8 +1,7 @@
 /* START: out of box css*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
-html,
-body {
+html, body {
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     box-sizing: border-box;
@@ -111,6 +110,12 @@ h1 {
 
         button {
             width: 100%;
+            padding: 10px 20px;
+            background-color: #68D391;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     }
 }
@@ -169,17 +174,6 @@ h1 {
 }
 
 /* CSS Teil von der html */
-
-html,
-* {
-    font-family: 'Inter';
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #fafafa;
-    line-height: 1.6;
-}
 
 .lead {
     font-size: 1.2rem;
