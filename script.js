@@ -163,14 +163,18 @@ function loadMindMapFromFirestore() {
                 const mindMapData = doc.data();
                 currentMindMapId = doc.id;
                 mwd.nodes(mindMapData);
+                isMindMapLoaded = true;
             } else {
                 console.log("No MindMaps found in Firestore.");
+                isMindMapLoaded = false;
             }
         }).catch(error => {
             console.error("Error loading mindmaps: ", error);
+            isMindMapLoaded = false;
         });
     } else {
         console.log("User not authenticated, unable to load MindMap.");
+        isMindMapLoaded = false;
     }
 }
 
