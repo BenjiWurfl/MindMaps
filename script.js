@@ -43,13 +43,14 @@ function loadMindMapFromFirestore() {
 
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
-  }
+}
 
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
     if (user) {
       // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
       console.log("User is signed in with UID:", user.uid);
+      loadMindMapFromFirestore();
     } else {
       // Kein Benutzer ist angemeldet.
       console.log("No user is signed in.");
