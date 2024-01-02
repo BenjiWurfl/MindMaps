@@ -20,6 +20,27 @@ let myDiagram;
 let currentMindMapId = null;
 let mwd;
 
+function loadMindMapFromFirestore() {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("You must be logged in to load mind maps.");
+      return;
+    }
+  
+    const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+    getDocs(mindMapsRef).then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        // Wählen Sie hier aus, welche MindMap geladen werden soll
+        const mindMapData = doc.data();
+        console.log("Loaded MindMap data:", mindMapData);
+        currentMindMapId = doc.id; // Speichern der aktuellen MindMap-ID
+        mwd.nodes(mindMapData); // Initialisieren der MindMap mit den geladenen Daten
+      });
+    }).catch(error => {
+      console.error("Error loading mindmaps: ", error);
+    });
+}
+
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
   }
@@ -180,27 +201,6 @@ onAuthStateChanged(auth, (user) => {
         console.error("Error adding mindmap: ", error);
       });
     }
-  }
-
-  function loadMindMapFromFirestore() {
-    const user = auth.currentUser;
-    if (!user) {
-      alert("You must be logged in to load mind maps.");
-      return;
-    }
-  
-    const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-    getDocs(mindMapsRef).then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        // Wählen Sie hier aus, welche MindMap geladen werden soll
-        const mindMapData = doc.data();
-        console.log("Loaded MindMap data:", mindMapData);
-        currentMindMapId = doc.id; // Speichern der aktuellen MindMap-ID
-        mwd.nodes(mindMapData); // Initialisieren der MindMap mit den geladenen Daten
-      });
-    }).catch(error => {
-      console.error("Error loading mindmaps: ", error);
-    });
   }
 
   function deleteMindMapFromFirestore() {
