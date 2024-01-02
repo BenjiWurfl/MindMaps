@@ -29,8 +29,7 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
       // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
       console.log("User is signed in with UID:", user.uid);
-      // Hier können Sie Funktionen aufrufen, die die UID verwenden.
-      //loadUserEvents();
+      loadMindMapFromFirestore();
     } else {
       // Kein Benutzer ist angemeldet.
       console.log("No user is signed in.");
@@ -136,7 +135,6 @@ onAuthStateChanged(auth, (user) => {
             ],
           });
         });
-        loadMindMapFromFirestore();
   }
   
   /* START: out of box code */
