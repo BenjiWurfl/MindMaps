@@ -235,3 +235,10 @@ canvas {
     visibility: visible; /* Sichtbar machen, wenn der Button gehovert wird */
     opacity: 1; /* Übergang zu voller Deckkraft */
 }
+
+.ctrl {
+    display: flex; /* Definiert ein flexibles Box-Layout für die Kind-Elemente */
+    justify-content: center; /* Zentriert die Schaltflächen horizontal */
+    align-items: center; /* Zentriert die Schaltflächen vertikal */
+    gap: 10px; /* Definiert einen Abstand zwischen den Schaltflächen */
+}
