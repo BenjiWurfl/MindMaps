@@ -19,6 +19,7 @@ const auth = getAuth(app);
 let myDiagram;
 let currentMindMapId = null;
 let mwd;
+let isSavedMindMapLoaded = false;
 
 function loadMindMapFromFirestore() {
     const user = auth.currentUser;
@@ -32,9 +33,10 @@ function loadMindMapFromFirestore() {
       querySnapshot.forEach(doc => {
         // Wählen Sie hier aus, welche MindMap geladen werden soll
         const mindMapData = doc.data();
-        console.log("Loaded MindMap data:", mindMapData);
+        //console.log("Loaded MindMap data:", mindMapData);
         currentMindMapId = doc.id; // Speichern der aktuellen MindMap-ID
         mwd.nodes(mindMapData); // Initialisieren der MindMap mit den geladenen Daten
+        isSavedMindMapLoaded = true;
       });
     }).catch(error => {
       console.error("Error loading mindmaps: ", error);
@@ -50,7 +52,6 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
       // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
       console.log("User is signed in with UID:", user.uid);
-      loadMindMapFromFirestore();
     } else {
       // Kein Benutzer ist angemeldet.
       console.log("No user is signed in.");
@@ -66,6 +67,7 @@ onAuthStateChanged(auth, (user) => {
       })
         .then((instance) => {
           mwd = instance;
+          if (!isSavedMindMapLoaded) {
           // install nodes here
           mwd.nodes({
             model: {
@@ -155,8 +157,9 @@ onAuthStateChanged(auth, (user) => {
               },
             ],
           });
-        });
-  }
+        }
+    });
+}
   
   /* START: out of box code */
   const el = document.querySelector('.ctrl');
