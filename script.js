@@ -20,27 +20,6 @@ let myDiagram;
 let currentMindMapId = null;
 let mwd;
 
-function loadMindMapFromFirestore() {
-    const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                // Nehmen Sie hier das erste Dokument (oder eine andere Logik, um eine spezifische MindMap auszuwählen)
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData); // Laden der MindMap-Daten
-            } else {
-                console.log("Keine MindMaps gefunden.");
-                // Initialisieren Sie hier die MindMap mit Standarddaten, falls gewünscht
-            }
-        }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-        });
-    }
-}
-
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
 }
@@ -59,19 +38,17 @@ onAuthStateChanged(auth, (user) => {
 });
 
 window.onload = () => {
-    window.mindwired
-        .init({
-            el: "#mmap-root",
-            ui: { width: '100%', height: 500 },
-        })
-        .then((instance) => {
-            mwd = instance;
-            // Default-MindMap nur initialisieren, wenn keine gespeicherte MindMap vorhanden ist
-            if (!currentMindMapId) {
-                initializeDefaultMindMap();
-            }
-        });
-}
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        // Wenn keine gespeicherte MindMap geladen wurde, initialisieren Sie die Standard-MindMap
+        if (!currentMindMapId) {
+            initializeDefaultMindMap();
+        }
+    });
+};
 
 function initializeDefaultMindMap() {
     // Installieren der Standardknoten hier
@@ -167,6 +144,23 @@ function initializeDefaultMindMap() {
     });
 }
 
+function loadMindMapFromFirestore() {
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const mindMapData = doc.data();
+                currentMindMapId = doc.id;
+                mwd.nodes(mindMapData);
+            }
+        }).catch(error => {
+            console.error("Error loading mindmaps: ", error);
+        });
+    }
+}
+
 /* START: out of box code */
 const el = document.querySelector('.ctrl');
 el.addEventListener('click', (e) => {
@@ -240,9 +234,6 @@ saveBtn.addEventListener('click', () => {
         saveMindMapToFirestore(JSON.parse(json));
     });
 });
-
-// Event-Listener zum Laden der MindMap beim Start
-window.addEventListener('load', loadMindMapFromFirestore);
 
 // Event-Listener zum Löschen der MindMap
 const deleteBtn = document.querySelector('[data-cmd="delete"]');
