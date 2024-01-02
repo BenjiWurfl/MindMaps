@@ -152,9 +152,11 @@ function loadMindMapFromFirestore() {
     if (user) {
         const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
         getDocs(mindMapsRef).then(querySnapshot => {
+            console.log("Anzahl der geladenen Dokumente:", querySnapshot.docs.length);
             if (!querySnapshot.empty) {
                 const doc = querySnapshot.docs[0];
                 const mindMapData = doc.data();
+                console.log("Geladene MindMap Daten:", mindMapData);
                 currentMindMapId = doc.id;
                 mwd.nodes(mindMapData);
             }
