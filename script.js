@@ -38,9 +38,6 @@ function loadMindMapFromFirestore() {
         }).catch(error => {
             console.error("Error loading mindmaps: ", error);
         });
-    } else {
-        console.log("User is not logged in.");
-        redirectToLogin();
     }
 }
 
