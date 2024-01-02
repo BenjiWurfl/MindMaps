@@ -19,6 +19,7 @@ const auth = getAuth(app);
 let myDiagram;
 let currentMindMapId = null;
 let mwd;
+let isMindMapLoaded = false;
 
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
@@ -27,11 +28,11 @@ function redirectToLogin() {
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Der Benutzer ist angemeldet und `user.uid` ist verfügbar.
         console.log("User is signed in with UID:", user.uid);
-        loadMindMapFromFirestore();
+        if (!isMindMapLoaded) {
+            loadMindMapFromFirestore();
+        }
     } else {
-        // Kein Benutzer ist angemeldet.
         console.log("No user is signed in.");
         redirectToLogin();
     }
@@ -44,8 +45,10 @@ window.onload = () => {
     }).then((instance) => {
         mwd = instance;
         // Wenn keine gespeicherte MindMap geladen wurde, initialisieren Sie die Standard-MindMap
-        if (!currentMindMapId) {
-            initializeDefaultMindMap();
+        if (!isMindMapLoaded && auth.currentUser) {
+            loadMindMapFromFirestore(); // Versuchen Sie zuerst, eine gespeicherte MindMap zu laden
+        } else {
+            initializeDefaultMindMap(); // Laden Sie die Standard-MindMap, wenn keine gespeicherte vorhanden ist
         }
     });
 };
