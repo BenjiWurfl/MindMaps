@@ -29,35 +29,53 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        if (!isMindMapLoaded) {
-            loadMindMapFromFirestore();
-        }
+        initializeMindWired(); // Initialisiere MindWired
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
     }
 });
 
-window.onload = () => {
-    console.log("window.onload gestartet");
 
+function initializeMindWired() {
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
-
-        // Überprüfen, ob eine gespeicherte MindMap geladen werden soll
-        if (!isMindMapLoaded && auth.currentUser) {
-            console.log("Versuche, gespeicherte MindMap zu laden");
-            loadMindMapFromFirestore(); 
-        } else {
-            console.log("Initialisiere Standard-MindMap");
-            initializeDefaultMindMap();
-        }
+        loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
     });
-};
+}
+
+function loadMindMapFromFirestore() {
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const mindMapData = doc.data();
+                currentMindMapId = doc.id;
+                mwd.nodes(mindMapData);
+                isMindMapLoaded = true;
+                console.log("MindMap erfolgreich geladen und gesetzt");
+            } else {
+                console.log("Keine gespeicherte MindMap gefunden, initialisiere Standard-MindMap");
+                isMindMapLoaded = false; // Da keine MindMap geladen wurde
+                initializeDefaultMindMap();
+            }
+        }).catch(error => {
+            console.error("Error loading mindmaps: ", error);
+            isMindMapLoaded = false; // Im Fehlerfall auch keine MindMap geladen
+            initializeDefaultMindMap();
+        });
+    } else {
+        console.log("Benutzer nicht angemeldet, kann MindMap nicht laden");
+        isMindMapLoaded = false; // Benutzer ist nicht angemeldet, also keine MindMap geladen
+        initializeDefaultMindMap();
+    }
+}
 
 function initializeDefaultMindMap() {
     // Installieren der Standardknoten hier
@@ -151,29 +169,6 @@ function initializeDefaultMindMap() {
             },
         ],
     });
-}
-
-function loadMindMapFromFirestore() {
-    const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData);
-                isMindMapLoaded = true;
-                console.log("MindMap erfolgreich geladen und gesetzt");
-            } else {
-                console.log("Keine gespeicherte MindMap gefunden");
-            }
-        }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-        });
-    } else {
-        console.log("Benutzer nicht angemeldet, kann MindMap nicht laden");
-    }
 }
 
 /* START: out of box code */
