@@ -27,39 +27,20 @@ function redirectToLogin() {
 
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
+    console.log("onAuthStateChanged called");
     if (user) {
         console.log("User is signed in with UID:", user.uid);
         if (!isMindMapLoaded) {
+            console.log("Calling loadMindMapFromFirestore");
             loadMindMapFromFirestore();
+        } else {
+            console.log("MindMap already loaded, no need to call loadMindMapFromFirestore");
         }
     } else {
-        console.log("No user is signed in.");
+        console.log("No user is signed in, redirecting to login.");
         redirectToLogin();
     }
 });
-
-function loadMindMapFromFirestore() {
-    const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData);
-                isMindMapLoaded = true; // Setzen Sie diese Variable, wenn eine MindMap geladen wird
-            } else {
-                initializeDefaultMindMap(); // Nur aufrufen, wenn keine MindMap geladen wird
-            }
-        }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-            initializeDefaultMindMap(); // Auch aufrufen im Falle eines Fehlers
-        });
-    } else {
-        initializeDefaultMindMap(); // Auch aufrufen, wenn kein Benutzer angemeldet ist
-    }
-}
 
 window.onload = () => {
     window.mindwired.init({
@@ -168,6 +149,23 @@ function initializeDefaultMindMap() {
             },
         ],
     });
+}
+
+function loadMindMapFromFirestore() {
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const mindMapData = doc.data();
+                currentMindMapId = doc.id;
+                mwd.nodes(mindMapData);
+            }
+        }).catch(error => {
+            console.error("Error loading mindmaps: ", error);
+        });
+    }
 }
 
 /* START: out of box code */
