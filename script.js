@@ -27,17 +27,13 @@ function redirectToLogin() {
 
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
-    console.log("onAuthStateChanged called");
     if (user) {
         console.log("User is signed in with UID:", user.uid);
         if (!isMindMapLoaded) {
-            console.log("Calling loadMindMapFromFirestore");
             loadMindMapFromFirestore();
-        } else {
-            console.log("MindMap already loaded, no need to call loadMindMapFromFirestore");
         }
     } else {
-        console.log("No user is signed in, redirecting to login.");
+        console.log("No user is signed in.");
         redirectToLogin();
     }
 });
@@ -154,17 +150,25 @@ function initializeDefaultMindMap() {
 function loadMindMapFromFirestore() {
     const user = auth.currentUser;
     if (user) {
+        console.log("User is authenticated, attempting to load MindMap from Firestore.");
         const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
         getDocs(mindMapsRef).then(querySnapshot => {
+            console.log("Received querySnapshot from Firestore. Number of docs:", querySnapshot.docs.length);
             if (!querySnapshot.empty) {
                 const doc = querySnapshot.docs[0];
                 const mindMapData = doc.data();
+                console.log("Loaded MindMap data:", mindMapData);
                 currentMindMapId = doc.id;
                 mwd.nodes(mindMapData);
+                console.log("MindMap nodes set with loaded data.");
+            } else {
+                console.log("No MindMaps found in Firestore.");
             }
         }).catch(error => {
             console.error("Error loading mindmaps: ", error);
         });
+    } else {
+        console.log("User not authenticated, unable to load MindMap.");
     }
 }
 
