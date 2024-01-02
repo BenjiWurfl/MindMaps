@@ -38,6 +38,29 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+function loadMindMapFromFirestore() {
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                const mindMapData = doc.data();
+                currentMindMapId = doc.id;
+                mwd.nodes(mindMapData);
+                isMindMapLoaded = true; // Setzen Sie diese Variable, wenn eine MindMap geladen wird
+            } else {
+                initializeDefaultMindMap(); // Nur aufrufen, wenn keine MindMap geladen wird
+            }
+        }).catch(error => {
+            console.error("Error loading mindmaps: ", error);
+            initializeDefaultMindMap(); // Auch aufrufen im Falle eines Fehlers
+        });
+    } else {
+        initializeDefaultMindMap(); // Auch aufrufen, wenn kein Benutzer angemeldet ist
+    }
+}
+
 window.onload = () => {
     window.mindwired.init({
         el: "#mmap-root",
@@ -145,25 +168,6 @@ function initializeDefaultMindMap() {
             },
         ],
     });
-}
-
-function loadMindMapFromFirestore() {
-    const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            console.log("Anzahl der geladenen Dokumente:", querySnapshot.docs.length);
-            if (!querySnapshot.empty) {
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                console.log("Geladene MindMap Daten:", mindMapData);
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData);
-            }
-        }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-        });
-    }
 }
 
 /* START: out of box code */
