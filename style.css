@@ -293,8 +293,8 @@ canvas {
     outline: none;
     transition: background-color 0.3s;
     position: absolute; /* Positionieren des Buttons */
-    top: 10px;         /* Abstand von oben */
-    right: 10px;       /* Abstand von rechts */
+    top: 20px;         /* Abstand von oben */
+    left: 20px;       /* Abstand von rechts */
   }
   
   #back-to-list:hover {
