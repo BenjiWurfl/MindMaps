@@ -21,7 +21,6 @@ let currentMindMapId = null;
 let mwd;
 let isMindMapLoaded = false;
 let mindMaps = [];
-const mindMapName = "";
 
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
@@ -74,11 +73,11 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
-    mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
+    const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
     if (mindMapName) {
         currentMindMapId = null;
         showMindMapEditorPage();
-        initializeDefaultMindMap(mindMapName); // Initialisiert eine neue MindMap mit dem gegebenen Namen
+        initializeDefaultMindMap(mindMapName); // Übergeben Sie den Namen hier
         saveMindMapToFirestore({ name: mindMapName, nodes: [] }); // Speichert die neue MindMap
     }
 }
@@ -132,7 +131,7 @@ function loadMindMapFromFirestore() {
     }
 }
 
-function initializeDefaultMindMap() {
+function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
     // Installieren der Standardknoten hier
     mwd.nodes({
         model: {
