@@ -62,20 +62,24 @@ function loadMindMapList() {
 
 function updateMindMapListUI() {
     const listContainer = document.getElementById("mindmap-list");
-    listContainer.innerHTML = ''; // Leere den Container vor dem Befüllen
+    listContainer.innerHTML = '';
 
     mindMaps.forEach(mindMap => {
         const listItem = document.createElement("div");
-        listItem.textContent = mindMap.data.name || "Unbenannte MindMap";
+        listItem.textContent = mindMap.data.name || "Unbenannte MindMap"; // Verwenden des MindMap-Namens
         listItem.addEventListener("click", () => navigateToMindMap(mindMap.id));
         listContainer.appendChild(listItem);
     });
 }
 
 function createNewMindMap() {
-    currentMindMapId = null;
-    showMindMapEditorPage();
-    initializeDefaultMindMap(); // Initialisiert eine leere MindMap
+    const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
+    if (mindMapName) {
+        currentMindMapId = null;
+        showMindMapEditorPage();
+        initializeDefaultMindMap(mindMapName); // Initialisiert eine neue MindMap mit dem gegebenen Namen
+        saveMindMapToFirestore({ name: mindMapName, nodes: [] }); // Speichert die neue MindMap
+    }
 }
 
 function navigateToMindMap(mindMapId) {
@@ -132,7 +136,7 @@ function initializeDefaultMindMap() {
     mwd.nodes({
         model: {
             type: "text",
-            text: "Thinkwise",
+            text: mindMapName,
         },
         view: {
             x: 0,
