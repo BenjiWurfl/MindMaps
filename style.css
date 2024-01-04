@@ -282,12 +282,22 @@ canvas {
     display: none;
   }
   
-  /* Stil für den 'Zur Liste' Button */
+  /* Stil für den 'Zur Liste' Button anpassen */
   #back-to-list {
-    background-color: #CBD5E0; /* Hellerer Hintergrund für den Zurück-Button */
-    margin-top: 10px;
+    background-color: #4F46E5; /* Gleiche Farbe wie andere Buttons */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+    position: absolute; /* Positionieren des Buttons */
+    top: 10px;         /* Abstand von oben */
+    right: 10px;       /* Abstand von rechts */
   }
   
   #back-to-list:hover {
-    background-color: #A0AEC0; /* Dunklere Farbe beim Hover */
-  }  
+    background-color: #3730A3; /* Dunklere Farbe beim Hover, wie bei anderen Buttons */
+  }
+  
