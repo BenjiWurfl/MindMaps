@@ -20,6 +20,7 @@ let myDiagram;
 let currentMindMapId = null;
 let mwd;
 let isMindMapLoaded = false;
+let mindMaps = [];
 
 function redirectToLogin() {
     window.location.href = 'https://benjiwurfl.github.io/Login/';
@@ -29,13 +30,62 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        initializeMindWired(); // Initialisiere MindWired
+        showMindMapListPage(); // Zeige die MindMap-Listenseite
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
     }
 });
 
+function showMindMapListPage() {
+    document.getElementById("mindmap-list-page").style.display = "block";
+    document.getElementById("mindmap-editor-page").style.display = "none";
+    loadMindMapList();
+}
+
+function showMindMapEditorPage() {
+    document.getElementById("mindmap-list-page").style.display = "none";
+    document.getElementById("mindmap-editor-page").style.display = "block";
+    initializeMindWired();
+}
+
+function loadMindMapList() {
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            mindMaps = querySnapshot.docs.map(doc => ({ id: doc.id, data: doc.data() }));
+            updateMindMapListUI(); // Aktualisiere die UI mit der Liste der MindMaps
+        });
+    }
+}
+
+function updateMindMapListUI() {
+    const listContainer = document.getElementById("mindmap-list");
+    listContainer.innerHTML = ''; // Leere den Container vor dem Befüllen
+
+    mindMaps.forEach(mindMap => {
+        const listItem = document.createElement("div");
+        listItem.textContent = mindMap.data.name || "Unbenannte MindMap";
+        listItem.addEventListener("click", () => navigateToMindMap(mindMap.id));
+        listContainer.appendChild(listItem);
+    });
+}
+
+function createNewMindMap() {
+    currentMindMapId = null;
+    showMindMapEditorPage();
+    initializeDefaultMindMap(); // Initialisiert eine leere MindMap
+}
+
+function navigateToMindMap(mindMapId) {
+    const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
+    if (selectedMindMap) {
+        currentMindMapId = selectedMindMap.id;
+        showMindMapEditorPage();
+        mwd.nodes(selectedMindMap.data);
+    }
+}
 
 function initializeMindWired() {
     window.mindwired.init({
@@ -236,6 +286,10 @@ function deleteMindMapFromFirestore() {
             });
     }
 }
+
+// Event-Listener für die Interaktion
+document.getElementById("create-new-mindmap").addEventListener("click", createNewMindMap);
+document.getElementById("back-to-list").addEventListener("click", showMindMapListPage);
 
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');

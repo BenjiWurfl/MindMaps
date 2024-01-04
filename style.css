@@ -242,3 +242,52 @@ canvas {
     align-items: center; /* Zentriert die Schaltflächen vertikal */
     gap: 10px; /* Definiert einen Abstand zwischen den Schaltflächen */
 }
+
+/* Stil für die MindMap-Listenseite */
+#mindmap-list-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #mindmap-list {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #mindmap-list div {
+    padding: 10px;
+    background-color: #EDF2F7;
+    border-radius: 5px;
+    border: 1px solid #CBD5E0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #mindmap-list div:hover {
+    background-color: #E2E8F0;
+  }
+  
+  #mindmap-list-page .btn {
+    margin-top: 20px;
+    align-self: flex-end; /* Positioniert den Button rechts unten */
+  }
+  
+  /* Stil für die MindMap-Editor-Seite */
+  #mindmap-editor-page {
+    display: none;
+  }
+  
+  /* Stil für den 'Zur Liste' Button */
+  #back-to-list {
+    background-color: #CBD5E0; /* Hellerer Hintergrund für den Zurück-Button */
+    margin-top: 10px;
+  }
+  
+  #back-to-list:hover {
+    background-color: #A0AEC0; /* Dunklere Farbe beim Hover */
+  }  
