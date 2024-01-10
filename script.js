@@ -114,6 +114,7 @@ function loadMindMapFromFirestore() {
         getDocs(mindMapDocRef).then(docSnapshot => {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
+                console.log("MindMapData from Firestore:", mindMapData);
                 mwd.nodes(mindMapData);
                 isMindMapLoaded = true;
                 console.log("MindMap erfolgreich geladen und gesetzt");
@@ -131,7 +132,7 @@ function loadMindMapFromFirestore() {
         isMindMapLoaded = false;
         initializeDefaultMindMap();
     }
-}
+} 
 
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
     // Installieren der Standardknoten hier
