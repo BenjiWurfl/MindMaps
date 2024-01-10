@@ -106,7 +106,7 @@ function loadMindMapFromFirestore() {
     const user = auth.currentUser;
     if (user && currentMindMapId) {
         const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", currentMindMapId);
-        getDoc(mindMapDocRef).then(docSnapshot => {
+        getDocs(mindMapDocRef).then(docSnapshot => {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
                 mwd.nodes(mindMapData);
