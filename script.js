@@ -112,14 +112,13 @@ function loadMindMapFromFirestore() {
     if (user && currentMindMapId) {
         const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", currentMindMapId);
         getDocs(mindMapDocRef).then(docSnapshot => {
-            if (docSnapshot.exists()) {
-                const mindMapData = docSnapshot.data();
-                console.log("MindMapData from Firestore:", mindMapData);
+            const mindMapData = docSnapshot.data();
+            if (mindMapData) {
                 mwd.nodes(mindMapData);
                 isMindMapLoaded = true;
                 console.log("MindMap erfolgreich geladen und gesetzt");
             } else {
-                console.log("MindMap nicht gefunden, initialisiere Standard-MindMap");
+                console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap");
                 isMindMapLoaded = false;
                 initializeDefaultMindMap();
             }
@@ -132,7 +131,7 @@ function loadMindMapFromFirestore() {
         isMindMapLoaded = false;
         initializeDefaultMindMap();
     }
-} 
+}
 
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
     // Installieren der Standardknoten hier
