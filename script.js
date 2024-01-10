@@ -99,6 +99,11 @@ function initializeMindWired() {
         mwd = instance;
         console.log("MindWired initialisiert");
         loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
+        
+        // Hier den Aufruf von initializeDefaultMindMap platzieren
+        if (!currentMindMapId) {
+            initializeDefaultMindMap();
+        }
     });
 }
 
