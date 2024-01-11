@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -84,15 +84,23 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        showMindMapEditorPage();
-        mwd.nodes(selectedMindMap.data);
+        const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
+        showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
+        // Entferne den folgenden Aufruf, da die Daten jetzt im showMindMapEditorPage geladen werden
+        // mwd.nodes(selectedMindMap.data.nodes);
     }
 }
 
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(mindMapName);
+    initializeMindWired(mindMapName); // Übergeben Sie den Namen hier
+    if (currentMindMapId) {
+        // Verschiebe den Aufruf von loadMindMapFromFirestore hier
+        loadMindMapFromFirestore();
+    } else {
+        initializeDefaultMindMap(mindMapName);
+    }
 }
 
 function initializeMindWired(mindMapName) {
@@ -112,10 +120,10 @@ function loadMindMapFromFirestore() {
     const user = auth.currentUser;
     if (user && currentMindMapId) {
         const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", currentMindMapId);
-        getDocs(mindMapDocRef).then(docSnapshot => {
-            const mindMapData = docSnapshot.data();
-            if (mindMapData) {
-                mwd.nodes(mindMapData);
+        getDoc(mindMapDocRef).then(docSnapshot => {
+            if (docSnapshot.exists()) {
+                const mindMapData = docSnapshot.data();
+                mwd.nodes(mindMapData.nodes); // Hier sicherstellen, dass du die Knoten-Daten setzt
                 isMindMapLoaded = true;
                 console.log("MindMap erfolgreich geladen und gesetzt");
             } else {
