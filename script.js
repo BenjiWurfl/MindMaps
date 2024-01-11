@@ -70,10 +70,13 @@ function createNewMindMap() {
     const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
     if (mindMapName) {
         currentMindMapId = null;
-        // Speichert die neue MindMap mit dem eingegebenen Namen bevor die Seite gewechselt wird.
-        saveMindMapToFirestore({ name: mindMapName, nodes: [] }).then(() => {
-            showMindMapEditorPage(mindMapName); // Übergeben Sie den Namen hier
-        });
+        saveMindMapToFirestore({ name: mindMapName, nodes: [] })
+            .then(() => {
+                showMindMapEditorPage(mindMapName); // Zeige die MindMap-Seite mit dem neuen Namen an
+            })
+            .catch(error => {
+                console.error("Error creating new mindmap: ", error);
+            });
     }
 }
 
@@ -244,29 +247,28 @@ btnClose.addEventListener('click', () => {
 /* END: out of box code */
 
 
-function saveMindMapToFirestore(mindMapData) {
+async function saveMindMapToFirestore(mindMapData) {
     const user = auth.currentUser;
     if (!user) {
         alert("You must be logged in to save mind maps.");
-        return;
+        return Promise.reject("Not logged in"); // Gib ein abgelehntes Promise zurück, wenn der Benutzer nicht angemeldet ist.
     }
 
-    // Überprüfen, ob eine MindMap-ID existiert, um zu entscheiden, ob eine neue erstellt oder eine vorhandene aktualisiert werden soll
     const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-    if (currentMindMapId) {
-        const mindMapDocRef = doc(mindMapsRef, currentMindMapId);
-        updateDoc(mindMapDocRef, mindMapData).then(() => {
+    try {
+        if (currentMindMapId) {
+            const mindMapDocRef = doc(mindMapsRef, currentMindMapId);
+            await updateDoc(mindMapDocRef, mindMapData); // Warte auf das Update-Dokument
             console.log("MindMap updated with ID: ", currentMindMapId);
-        }).catch(error => {
-            console.error("Error updating mindmap: ", error);
-        });
-    } else {
-        addDoc(mindMapsRef, mindMapData).then(docRef => {
+        } else {
+            const docRef = await addDoc(mindMapsRef, mindMapData); // Warte auf das Hinzufügen des Dokuments
             console.log("MindMap added with ID: ", docRef.id);
             currentMindMapId = docRef.id; // Speichern der neuen ID
-        }).catch(error => {
-            console.error("Error adding mindmap: ", error);
-        });
+        }
+        return Promise.resolve(); // Gib ein erfülltes Promise zurück, wenn alles erfolgreich war.
+    } catch (error) {
+        console.error("Error saving mindmap: ", error);
+        return Promise.reject(error); // Gib ein abgelehntes Promise zurück, wenn ein Fehler auftritt.
     }
 }
 
