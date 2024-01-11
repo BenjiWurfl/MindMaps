@@ -111,7 +111,7 @@ function initializeMindWired(mindMapName) {
         mwd = instance;
         console.log("MindWired initialisiert");
         // Lade zuerst die MindMap aus Firestore, bevor du versuchst, sie zu initialisieren
-        loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
+        //loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
     });
 }
 
@@ -122,23 +122,23 @@ function loadMindMapFromFirestore(mindMapName) {
         getDoc(mindMapDocRef).then(docSnapshot => {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
-                mwd.nodes(mindMapData.nodes); // Stelle sicher, dass du die Knoten-Daten setzt
+                mwd.nodes(mindMapData.nodes); // Hier sicherstellen, dass du die Knoten-Daten setzt
                 isMindMapLoaded = true;
                 console.log("MindMap erfolgreich geladen und gesetzt");
             } else {
                 console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap mit dem übergebenen Namen");
                 isMindMapLoaded = false;
-                initializeDefaultMindMap(mindMapName); // Verwende den Namen, der als Parameter übergeben wurde
+                initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
             }
         }).catch(error => {
             console.error("Error loading mindmap: ", error);
             isMindMapLoaded = false;
-            initializeDefaultMindMap(mindMapName); // Fallback auf die Standard-MindMap mit dem übergebenen Namen
+            initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
         });
     } else {
-        console.log("Benutzer nicht angemeldet oder keine MindMap-ID vorhanden, initialisiere Standard-MindMap mit dem übergebenen Namen");
+        console.log("Benutzer nicht angemeldet oder keine MindMap-ID vorhanden, initialisiere Standard-MindMap");
         isMindMapLoaded = false;
-        initializeDefaultMindMap(mindMapName); // Verwende den Namen, der als Parameter übergeben wurde
+        initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
     }
 }
 
