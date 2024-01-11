@@ -96,13 +96,6 @@ function initializeMindWired(mindMapName) {
     });
 }
 
-
-function showMindMapEditorPage() {
-    document.getElementById("mindmap-list-page").style.display = "none";
-    document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired();
-}
-
 function initializeMindWired(mindMapName) {
     window.mindwired.init({
         el: "#mmap-root",
