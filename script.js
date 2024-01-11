@@ -94,11 +94,11 @@ function navigateToMindMap(mindMapId) {
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(mindMapName);
+    initializeMindWired(); // Rufe ohne Parameter auf, da diese in loadMindMapFromFirestore verwendet werden
     if (currentMindMapId) {
-        loadMindMapFromFirestore();
+        loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
     } else {
-        initializeDefaultMindMap(mindMapName);
+        initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
     }
 }
 
@@ -127,21 +127,22 @@ function loadMindMapFromFirestore(mindMapName) {
             } else {
                 console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap mit dem übergebenen Namen");
                 isMindMapLoaded = false;
-                initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
+                initializeDefaultMindMap(); // Nur hier aufrufen
             }
         }).catch(error => {
             console.error("Error loading mindmap: ", error);
             isMindMapLoaded = false;
-            initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
+            initializeDefaultMindMap(); // Nur hier aufrufen
         });
     } else {
         console.log("Benutzer nicht angemeldet oder keine MindMap-ID vorhanden, initialisiere Standard-MindMap");
         isMindMapLoaded = false;
-        initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
+        initializeDefaultMindMap(); // Nur hier aufrufen
     }
 }
 
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
+    mwd.clear();
     // Installieren der Standardknoten hier
     mwd.nodes({
         model: {
