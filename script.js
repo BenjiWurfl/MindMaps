@@ -94,7 +94,7 @@ function navigateToMindMap(mindMapId) {
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired();
+    initializeMindWired(mindMapName);
     if (currentMindMapId) {
         loadMindMapFromFirestore();
     } else {
