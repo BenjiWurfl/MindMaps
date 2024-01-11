@@ -142,7 +142,6 @@ function loadMindMapFromFirestore(mindMapName) {
 }
 
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
-    mwd.clear();
     // Installieren der Standardknoten hier
     mwd.nodes({
         model: {
