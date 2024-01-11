@@ -43,12 +43,6 @@ function showMindMapListPage() {
     loadMindMapList();
 }
 
-function showMindMapEditorPage() {
-    document.getElementById("mindmap-list-page").style.display = "none";
-    document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired();
-}
-
 function loadMindMapList() {
     const user = auth.currentUser;
     if (user) {
@@ -72,30 +66,54 @@ function updateMindMapListUI() {
     });
 }
 
-function initializeMindWired() {
+function createNewMindMap() {
+    const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
+    if (mindMapName) {
+        currentMindMapId = null;
+        // Speichert die neue MindMap mit dem eingegebenen Namen bevor die Seite gewechselt wird.
+        saveMindMapToFirestore({ name: mindMapName, nodes: [] }).then(() => {
+            showMindMapEditorPage(mindMapName); // Übergeben Sie den Namen hier
+        });
+    }
+}
+
+function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
+    document.getElementById("mindmap-list-page").style.display = "none";
+    document.getElementById("mindmap-editor-page").style.display = "block";
+    initializeMindWired(mindMapName);
+}
+
+function initializeMindWired(mindMapName) {
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
+        // Stelle sicher, dass der MindMap-Name hier korrekt gesetzt wird.
+        initializeDefaultMindMap(mindMapName); // Übergeben Sie den Namen hier
         loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
-        
-        // Hier den Aufruf von initializeDefaultMindMap platzieren
-        if (!currentMindMapId) {
-            initializeDefaultMindMap();
-        }
     });
 }
 
-function createNewMindMap() {
-    const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
-    if (mindMapName) {
-        currentMindMapId = null;
-        showMindMapEditorPage();
+
+function showMindMapEditorPage() {
+    document.getElementById("mindmap-list-page").style.display = "none";
+    document.getElementById("mindmap-editor-page").style.display = "block";
+    initializeMindWired();
+}
+
+function initializeMindWired(mindMapName) {
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
+        // Stelle sicher, dass der MindMap-Name hier korrekt gesetzt wird.
         initializeDefaultMindMap(mindMapName); // Übergeben Sie den Namen hier
-        saveMindMapToFirestore({ name: mindMapName, nodes: [] }); // Speichert die neue MindMap
-    }
+        loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
+    });
 }
 
 function navigateToMindMap(mindMapId) {
