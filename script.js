@@ -86,21 +86,14 @@ function navigateToMindMap(mindMapId) {
         currentMindMapId = selectedMindMap.id;
         const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
         showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
-        // Entferne den folgenden Aufruf, da die Daten jetzt im showMindMapEditorPage geladen werden
-        // mwd.nodes(selectedMindMap.data.nodes);
+        mwd.nodes(selectedMindMap.data.nodes);
     }
 }
 
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(mindMapName); // Übergeben Sie den Namen hier
-    if (currentMindMapId) {
-        // Verschiebe den Aufruf von loadMindMapFromFirestore hier
-        loadMindMapFromFirestore();
-    } else {
-        initializeDefaultMindMap(mindMapName);
-    }
+    initializeMindWired(mindMapName);
 }
 
 function initializeMindWired(mindMapName) {
