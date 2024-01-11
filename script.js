@@ -127,17 +127,17 @@ function loadMindMapFromFirestore(mindMapName) {
             } else {
                 console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap mit dem übergebenen Namen");
                 isMindMapLoaded = false;
-                initializeDefaultMindMap(); // Nur hier aufrufen
+                initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
             }
         }).catch(error => {
             console.error("Error loading mindmap: ", error);
             isMindMapLoaded = false;
-            initializeDefaultMindMap(); // Nur hier aufrufen
+            initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
         });
     } else {
         console.log("Benutzer nicht angemeldet oder keine MindMap-ID vorhanden, initialisiere Standard-MindMap");
         isMindMapLoaded = false;
-        initializeDefaultMindMap(); // Nur hier aufrufen
+        initializeDefaultMindMap(mindMapName); // Nur hier aufrufen
     }
 }
 
