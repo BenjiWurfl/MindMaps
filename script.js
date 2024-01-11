@@ -72,6 +72,22 @@ function updateMindMapListUI() {
     });
 }
 
+function initializeMindWired() {
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
+        loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
+        
+        // Hier den Aufruf von initializeDefaultMindMap platzieren
+        if (!currentMindMapId) {
+            initializeDefaultMindMap();
+        }
+    });
+}
+
 function createNewMindMap() {
     const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
     if (mindMapName) {
@@ -89,22 +105,6 @@ function navigateToMindMap(mindMapId) {
         showMindMapEditorPage();
         mwd.nodes(selectedMindMap.data);
     }
-}
-
-function initializeMindWired() {
-    window.mindwired.init({
-        el: "#mmap-root",
-        ui: {width: '100%', height: 500},
-    }).then((instance) => {
-        mwd = instance;
-        console.log("MindWired initialisiert");
-        loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
-        
-        // Hier den Aufruf von initializeDefaultMindMap platzieren
-        if (!currentMindMapId) {
-            initializeDefaultMindMap();
-        }
-    });
 }
 
 function loadMindMapFromFirestore() {
