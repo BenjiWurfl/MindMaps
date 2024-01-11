@@ -94,16 +94,15 @@ function navigateToMindMap(mindMapId) {
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(mindMapName); // Übergeben Sie den Namen hier
+    initializeMindWired();
     if (currentMindMapId) {
-        // Verschiebe den Aufruf von loadMindMapFromFirestore hier
         loadMindMapFromFirestore();
     } else {
         initializeDefaultMindMap(mindMapName);
     }
 }
 
-function initializeMindWired(mindMapName) {
+function initializeMindWired() {
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
