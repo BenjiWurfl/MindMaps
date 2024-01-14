@@ -30,7 +30,6 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
         showMindMapListPage();
-        initializeMindWired();
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
@@ -94,16 +93,18 @@ function navigateToMindMap(mindMapId) {
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(); // Rufe ohne Parameter auf, da diese in loadMindMapFromFirestore verwendet werden
-    if (currentMindMapId) {
-        loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
-    } else {
-        initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
-    }
+    // Verwende das Promise von initializeMindWired, um die Reihenfolge zu synchronisieren.
+    initializeMindWired().then(() => {
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
+        } else {
+            initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
+        }
+    });
 }
 
 function initializeMindWired() {
-    window.mindwired.init({
+    return window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
@@ -111,6 +112,7 @@ function initializeMindWired() {
         console.log("MindWired initialisiert");
         // Lade zuerst die MindMap aus Firestore, bevor du versuchst, sie zu initialisieren
         //loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
+        return instance;
     });
 }
 
