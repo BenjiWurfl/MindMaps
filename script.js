@@ -16,7 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-let myDiagram;
 let currentMindMapId = null;
 let mwd;
 let isMindMapLoaded = false;
@@ -30,7 +29,8 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        showMindMapListPage(); // Zeige die MindMap-Listenseite
+        showMindMapListPage();
+        initializeMindWired();
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
