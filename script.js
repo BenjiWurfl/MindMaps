@@ -66,25 +66,16 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
-    console.log("Aufruf von createNewMindMap");
-
     const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
-    console.log("Eingegebener MindMap-Name:", mindMapName);
-
     if (mindMapName) {
         currentMindMapId = null;
-        console.log("Aktuelle MindMap-ID zurückgesetzt");
-
         saveMindMapToFirestore({ name: mindMapName, nodes: [] })
             .then(() => {
-                console.log("MindMap in Firestore gespeichert, Name:", mindMapName);
                 showMindMapEditorPage(mindMapName); // Zeige die MindMap-Seite mit dem neuen Namen an
             })
             .catch(error => {
                 console.error("Error creating new mindmap: ", error);
             });
-    } else {
-        console.log("Kein MindMap-Name eingegeben");
     }
 }
 
@@ -100,13 +91,19 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
+    console.log("Aufruf von showMindMapEditorPage mit MindMap-Name:", mindMapName);
+
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(); // Rufe ohne Parameter auf, da diese in loadMindMapFromFirestore verwendet werden
+
+    initializeMindWired();
+    
     if (currentMindMapId) {
-        loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
+        console.log("Lade MindMap aus Firestore mit ID:", currentMindMapId);
+        loadMindMapFromFirestore(mindMapName);
     } else {
-        initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
+        console.log("Keine MindMap-ID vorhanden, initialisiere Standard-MindMap mit Name:", mindMapName);
+        initializeDefaultMindMap(mindMapName);
     }
 }
 
