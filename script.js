@@ -66,12 +66,12 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
-    const mindMapName = prompt("Bitte geben Sie einen Namen für die neue MindMap ein:");
+    const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
         currentMindMapId = null;
-        saveMindMapToFirestore({ name: mindMapName, nodes: [] })
+        saveMindMapToFirestore({ name: mindMapName })
             .then(() => {
-                showMindMapEditorPage(mindMapName); // Zeige die MindMap-Seite mit dem neuen Namen an
+                showMindMapEditorPage(mindMapName);
             })
             .catch(error => {
                 console.error("Error creating new mindmap: ", error);
@@ -99,15 +99,13 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     }
 }
 
-function initializeMindWired(mindMapName) {
+function initializeMindWired() {
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
-        // Lade zuerst die MindMap aus Firestore, bevor du versuchst, sie zu initialisieren
-        loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
     });
 }
 
