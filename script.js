@@ -121,11 +121,11 @@ function loadMindMapFromFirestore(mindMapName) {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
                 console.log("Geladene MindMap-Daten:", mindMapData); // Debugging: Ausgabe der geladenen Daten
-                if (mindMapData.nodes && mindMapData.nodes.view) { // Überprüfen, ob die erwartete Struktur vorhanden ist
+                if (mindMapData.nodes && mindMapData.nodes.length > 0) { // Überprüfen, ob Nodes vorhanden sind
                     mwd.nodes(mindMapData.nodes); 
                 } else {
-                    console.error("Ungültiges Format der MindMap-Daten");
-                    initializeDefaultMindMap(mindMapName);
+                    console.log("Leere MindMap, initialisiere Standard-MindMap mit dem Namen:", mindMapName);
+                    initializeDefaultMindMap(mindMapName); // Fallback, wenn keine Nodes vorhanden sind
                 }
                 isMindMapLoaded = true;
             } else {
