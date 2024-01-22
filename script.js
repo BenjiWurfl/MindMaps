@@ -107,7 +107,7 @@ function initializeMindWired() {
         mwd = instance;
         console.log("MindWired initialisiert");
         // Lade zuerst die MindMap aus Firestore, bevor du versuchst, sie zu initialisieren
-        //loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
+        loadMindMapFromFirestore(mindMapName); // Der MindMap-Name wird jetzt als Parameter übergeben
     });
 }
 
