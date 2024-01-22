@@ -99,7 +99,7 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     }
 }
 
-function initializeMindWired() {
+function initializeMindWired(mindMapName) {
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
