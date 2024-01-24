@@ -36,18 +36,23 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-function showMindMapListPage() {
-    document.getElementById("mindmap-list-page").style.display = "block";
-    document.getElementById("mindmap-editor-page").style.display = "none";
-    resetMindMapEditor();
-    loadMindMapList();
+// Funktion zum Zurücksetzen der MindWired-Instanz
+function resetMindWired() {
+    if (mwd) {
+        // Hier sollten Methoden aufgerufen werden, die die aktuelle MindMap-Darstellung bereinigen
+        // Dies könnte das Entfernen von Knoten oder das Zurücksetzen des Zustands der Instanz beinhalten
+        // Die spezifische Implementierung hängt von den Methoden ab, die MindWired zur Verfügung stellt
+        mwd.clear(); // Angenommen, MindWired hat eine clear-Methode zum Zurücksetzen
+    }
+    // Reinitialisiere MindWired nach dem Bereinigen
+    initializeMindWired();
 }
 
-function resetMindMapEditor() {
-    if (mwd) {
-        mwd.destroy(); // Nimm an, dass es eine destroy-Methode gibt, überprüfe die Dokumentation
-        mwd = null;
-    }
+function showMindMapListPage() {
+    resetMindWired();
+    document.getElementById("mindmap-list-page").style.display = "block";
+    document.getElementById("mindmap-editor-page").style.display = "none";
+    loadMindMapList();
 }
 
 function loadMindMapList() {
@@ -74,6 +79,7 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
+    resetMindWired();
     const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
         currentMindMapId = null;
@@ -112,15 +118,13 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
 }
 
 function initializeMindWired() {
-    if (!mwd) {                                // Überprüfe, ob mwd bereits initialisiert wurde
-        window.mindwired.init({
-            el: "#mmap-root",
-            ui: {width: '100%', height: 500},
-        }).then((instance) => {
-            mwd = instance;
-            console.log("MindWired initialisiert");
-        });
-    }
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
+    });
 }
 
 function loadMindMapFromFirestore(mindMapName) {
