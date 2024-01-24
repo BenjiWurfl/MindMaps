@@ -93,27 +93,40 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
-    console.log("showMindMapEditorPage - Start", { mindMapName });
+    console.log("showMindMapEditorPage - Called with mindMapName:", mindMapName);
+
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
+    console.log("showMindMapEditorPage - deinitializeMindWired called");
+
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired().then(() => { // Warte auf die Initialisierung, bevor du weitermachst
+    console.log("showMindMapEditorPage - UI updated");
+
+    initializeMindWired().then(() => {
+        console.log("showMindMapEditorPage - MindWired initialized");
         if (currentMindMapId) {
+            console.log("showMindMapEditorPage - Loading existing MindMap with ID:", currentMindMapId);
             loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
         } else {
+            console.log("showMindMapEditorPage - Initializing default MindMap");
             initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
         }
+    }).catch(error => {
+        console.error("showMindMapEditorPage - Error initializing MindWired:", error);
     });
 }
 
 function deinitializeMindWired() {
-    // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
+    console.log("deinitializeMindWired - Called");
     const mmapRoot = document.querySelector("#mmap-root");
     if (mmapRoot) {
+        console.log("deinitializeMindWired - mmapRoot found, clearing innerHTML");
         mmapRoot.innerHTML = '';
+    } else {
+        console.log("deinitializeMindWired - mmapRoot not found");
     }
-    // Setze die Variable mwd zurück
     mwd = null;
+    console.log("deinitializeMindWired - mwd set to null");
 }
 
 function initializeMindWired() {
@@ -127,7 +140,6 @@ function initializeMindWired() {
 }
 
 function loadMindMapFromFirestore(mindMapName) {
-    console.log("Aufruf von loadMindMapFromFirestore mit MindMap-Name:", mindMapName);
     const user = auth.currentUser;
 
     if (user && currentMindMapId) {
