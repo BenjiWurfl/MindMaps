@@ -39,7 +39,15 @@ onAuthStateChanged(auth, (user) => {
 function showMindMapListPage() {
     document.getElementById("mindmap-list-page").style.display = "block";
     document.getElementById("mindmap-editor-page").style.display = "none";
+    resetMindMapEditor();
     loadMindMapList();
+}
+
+function resetMindMapEditor() {
+    if (mwd) {
+        mwd.destroy(); // Nimm an, dass es eine destroy-Methode gibt, überprüfe die Dokumentation
+        mwd = null;
+    }
 }
 
 function loadMindMapList() {
@@ -104,13 +112,15 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
 }
 
 function initializeMindWired() {
-    window.mindwired.init({
-        el: "#mmap-root",
-        ui: {width: '100%', height: 500},
-    }).then((instance) => {
-        mwd = instance;
-        console.log("MindWired initialisiert");
-    });
+    if (!mwd) {                                // Überprüfe, ob mwd bereits initialisiert wurde
+        window.mindwired.init({
+            el: "#mmap-root",
+            ui: {width: '100%', height: 500},
+        }).then((instance) => {
+            mwd = instance;
+            console.log("MindWired initialisiert");
+        });
+    }
 }
 
 function loadMindMapFromFirestore(mindMapName) {
