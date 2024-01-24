@@ -69,7 +69,8 @@ function createNewMindMap() {
     const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
         currentMindMapId = null;
-        saveMindMapToFirestore({ name: mindMapName })
+        const defaultMindMapData = initializeDefaultMindMap(mindMapName);
+        saveMindMapToFirestore(defaultMindMapData)
             .then(() => {
                 showMindMapEditorPage(mindMapName);
             })
@@ -138,6 +139,16 @@ function loadMindMapFromFirestore(mindMapName) {
         initializeDefaultMindMap(mindMapName);
     }
 }
+
+/*function getDefaultMindMapData(mindMapName) {
+    return {
+        name: mindMapName,
+        nodes: [
+            
+        ]
+    };
+}
+*/
 
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
     // Installieren der Standardknoten hier
