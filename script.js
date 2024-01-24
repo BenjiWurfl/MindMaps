@@ -66,20 +66,31 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
+    console.log("createNewMindMap - Start");
+    
     const mindMapName = prompt("Please enter a name for the new mind map:");
+    console.log("createNewMindMap - Prompt completed", { mindMapName });
+    
     if (mindMapName) {
         currentMindMapId = null;
+        console.log("createNewMindMap - currentMindMapId set to null");
+
         const defaultMindMapData = {
             name: mindMapName,
             nodes: getDefaultMindMapStructure(mindMapName) // Erhalte die Standard-Datenstruktur
         };
+        console.log("createNewMindMap - defaultMindMapData prepared", { defaultMindMapData });
+
         saveMindMapToFirestore(defaultMindMapData)
             .then(() => {
+                console.log("createNewMindMap - MindMap saved to Firestore", { mindMapName });
                 showMindMapEditorPage(mindMapName);
             })
             .catch(error => {
                 console.error("Error creating new mindmap: ", error);
             });
+    } else {
+        console.log("createNewMindMap - No name entered, action cancelled");
     }
 }
 
@@ -138,7 +149,7 @@ function loadMindMapFromFirestore(mindMapName) {
                 console.log("Geladene MindMap-Daten:", mindMapData);
                 mwd.nodes(mindMapData.nodes); // Hier sicherstellen, dass du die Knoten-Daten setzt
                 isMindMapLoaded = true;
-            } else {
+            } else { 
                 console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap mit dem übergebenen Namen");
                 isMindMapLoaded = false;
                 initializeDefaultMindMap(mindMapName);
