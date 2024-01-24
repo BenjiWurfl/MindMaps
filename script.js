@@ -36,20 +36,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Funktion zum Zurücksetzen der MindWired-Instanz
-function resetMindWired() {
-    if (mwd) {
-        // Hier sollten Methoden aufgerufen werden, die die aktuelle MindMap-Darstellung bereinigen
-        // Dies könnte das Entfernen von Knoten oder das Zurücksetzen des Zustands der Instanz beinhalten
-        // Die spezifische Implementierung hängt von den Methoden ab, die MindWired zur Verfügung stellt
-        mwd.clear(); // Angenommen, MindWired hat eine clear-Methode zum Zurücksetzen
-    }
-    // Reinitialisiere MindWired nach dem Bereinigen
-    initializeMindWired();
-}
-
 function showMindMapListPage() {
-    resetMindWired();
     document.getElementById("mindmap-list-page").style.display = "block";
     document.getElementById("mindmap-editor-page").style.display = "none";
     loadMindMapList();
@@ -79,7 +66,6 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
-    resetMindWired();
     const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
         currentMindMapId = null;
@@ -107,18 +93,30 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
+    deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired(); // Rufe ohne Parameter auf, da diese in loadMindMapFromFirestore verwendet werden
-    if (currentMindMapId) {
-        loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
-    } else {
-        initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
+    initializeMindWired().then(() => { // Warte auf die Initialisierung, bevor du weitermachst
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
+        } else {
+            initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
+        }
+    });
+}
+
+function deinitializeMindWired() {
+    // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
+    const mmapRoot = document.querySelector("#mmap-root");
+    if (mmapRoot) {
+        mmapRoot.innerHTML = '';
     }
+    // Setze die Variable mwd zurück
+    mwd = null;
 }
 
 function initializeMindWired() {
-    window.mindwired.init({
+    return window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
