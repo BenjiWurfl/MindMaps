@@ -92,41 +92,29 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
+//done
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
-    console.log("showMindMapEditorPage - Called with mindMapName:", mindMapName);
-
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
-    console.log("showMindMapEditorPage - deinitializeMindWired called");
-
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    console.log("showMindMapEditorPage - UI updated");
-
-    initializeMindWired().then(() => {
-        console.log("showMindMapEditorPage - MindWired initialized");
+    initializeMindWired().then(() => { // Warte auf die Initialisierung, bevor du weitermachst
         if (currentMindMapId) {
-            console.log("showMindMapEditorPage - Loading existing MindMap with ID:", currentMindMapId);
             loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
         } else {
-            console.log("showMindMapEditorPage - Initializing default MindMap");
             initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
         }
-    }).catch(error => {
-        console.error("showMindMapEditorPage - Error initializing MindWired:", error);
     });
 }
 
+//done
 function deinitializeMindWired() {
-    console.log("deinitializeMindWired - Called");
+    // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
     const mmapRoot = document.querySelector("#mmap-root");
     if (mmapRoot) {
-        console.log("deinitializeMindWired - mmapRoot found, clearing innerHTML");
         mmapRoot.innerHTML = '';
-    } else {
-        console.log("deinitializeMindWired - mmapRoot not found");
     }
+    // Setze die Variable mwd zurück
     mwd = null;
-    console.log("deinitializeMindWired - mwd set to null");
 }
 
 function initializeMindWired() {
@@ -140,35 +128,37 @@ function initializeMindWired() {
 }
 
 function loadMindMapFromFirestore(mindMapName) {
+    console.log("loadMindMapFromFirestore - Called", { mindMapName, currentMindMapId });
     const user = auth.currentUser;
 
     if (user && currentMindMapId) {
-        console.log("Lade MindMap mit ID:", currentMindMapId);
+        console.log("loadMindMapFromFirestore - User logged in and MindMap ID exists");
         const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", currentMindMapId);
         getDoc(mindMapDocRef).then(docSnapshot => {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
-                console.log("Geladene MindMap-Daten:", mindMapData);
-                mwd.nodes(mindMapData.nodes); // Hier sicherstellen, dass du die Knoten-Daten setzt
+                console.log("loadMindMapFromFirestore - MindMap data loaded", { mindMapData });
+                mwd.nodes(mindMapData.nodes); // Überprüfe, ob diese Zeile korrekt funktioniert
                 isMindMapLoaded = true;
             } else { 
-                console.log("MindMapData nicht gefunden, initialisiere Standard-MindMap mit dem übergebenen Namen");
+                console.log("loadMindMapFromFirestore - No data found, initializing default MindMap");
                 isMindMapLoaded = false;
                 initializeDefaultMindMap(mindMapName);
             }
         }).catch(error => {
-            console.error("Error loading mindmap: ", error);
+            console.error("loadMindMapFromFirestore - Error loading mindmap", error);
             isMindMapLoaded = false;
             initializeDefaultMindMap(mindMapName);
         });
     } else {
-        console.log("Benutzer nicht angemeldet oder keine MindMap-ID vorhanden, initialisiere Standard-MindMap");
+        console.log("loadMindMapFromFirestore - No user or MindMap ID, initializing default MindMap");
         isMindMapLoaded = false;
         initializeDefaultMindMap(mindMapName);
     }
 }
 
 function getDefaultMindMapStructure(mindMapName) {
+    console.log("getDefaultMindMapStructure - Called", { mindMapName });
     return {
         model: {
             type: "text",
