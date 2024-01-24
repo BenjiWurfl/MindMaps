@@ -69,7 +69,10 @@ function createNewMindMap() {
     const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
         currentMindMapId = null;
-        const defaultMindMapData = initializeDefaultMindMap(mindMapName);
+        const defaultMindMapData = {
+            name: mindMapName,
+            nodes: getDefaultMindMapStructure(mindMapName) // Erhalte die Standard-Datenstruktur
+        };
         saveMindMapToFirestore(defaultMindMapData)
             .then(() => {
                 showMindMapEditorPage(mindMapName);
@@ -140,19 +143,8 @@ function loadMindMapFromFirestore(mindMapName) {
     }
 }
 
-/*function getDefaultMindMapData(mindMapName) {
+function getDefaultMindMapStructure(mindMapName) {
     return {
-        name: mindMapName,
-        nodes: [
-            
-        ]
-    };
-}
-*/
-
-function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
-    // Installieren der Standardknoten hier
-    mwd.nodes({
         model: {
             type: "text",
             text: mindMapName,
@@ -241,7 +233,13 @@ function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
                 ],
             },
         ],
-    });
+    };
+}
+
+// Modifizierte initializeDefaultMindMap, die die Standard-Daten zurückgibt
+function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
+    const defaultMindMapData = getDefaultMindMapStructure(mindMapName);
+    mwd.nodes(defaultMindMapData); // Verwende die Standard-Daten, um die MindMap zu initialisieren
 }
 
 /* START: out of box code */
