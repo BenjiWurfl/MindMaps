@@ -98,11 +98,10 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        showMindMapEditorPage(selectedMindMap.data.name);
-        loadMindMapFromFirestore(selectedMindMap.id); // Verwende die MindMap-ID hier
+        const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
+        showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
     }
 }
-
 function showMindMapEditorPage(mindMapName) {
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
