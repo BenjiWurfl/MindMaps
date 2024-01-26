@@ -68,13 +68,13 @@ function updateMindMapListUI() {
 function createNewMindMap() {
     const mindMapName = prompt("Please enter a name for the new mind map:");
     if (mindMapName) {
-        currentMindMapId = null;
         const defaultMindMapData = {
             name: mindMapName,
-            nodes: getDefaultMindMapStructure(mindMapName) // Erhalte die Standard-Datenstruktur
+            nodes: getDefaultMindMapStructure(mindMapName)
         };
         saveMindMapToFirestore(defaultMindMapData)
-            .then(() => {
+            .then(newMindMapId => { // Empfange die neue ID
+                currentMindMapId = newMindMapId; // Setze die neue ID als currentMindMapId
                 showMindMapEditorPage(mindMapName);
             })
             .catch(error => {
@@ -94,17 +94,14 @@ function navigateToMindMap(mindMapId) {
 
 //done
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
-    deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
+    deinitializeMindWired();
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
     initializeMindWired().then(() => {
-        // Warte auf die Initialisierung, bevor du weitermachst
-        if (!currentMindMapId) {
-            // Wenn keine currentMindMapId vorhanden ist, initialisiere eine neue Default-MindMap
+        if (!currentMindMapId) { // Überprüfe, ob die currentMindMapId null ist
             initializeDefaultMindMap(mindMapName);
         } else {
-            // Wenn eine currentMindMapId vorhanden ist, lade die MindMap aus Firestore
-            loadMindMapFromFirestore();
+            loadMindMapFromFirestore(currentMindMapId); // Ändere diese Zeile
         }
     });
 }
@@ -129,32 +126,23 @@ function initializeMindWired() {
     });
 }
 
-function loadMindMapFromFirestore(mindMapName) {
+function loadMindMapFromFirestore(mindMapId) { // Füge mindMapId als Parameter hinzu
     const user = auth.currentUser;
-
-    if (user && currentMindMapId) {
-        console.log("loadMindMapFromFirestore - User logged in and MindMap ID exists");
-        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", currentMindMapId);
+    if (user && mindMapId) { // Verwende mindMapId statt currentMindMapId
+        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
         getDoc(mindMapDocRef).then(docSnapshot => {
             if (docSnapshot.exists()) {
                 const mindMapData = docSnapshot.data();
-                console.log("loadMindMapFromFirestore - MindMap data loaded", { mindMapData });
-                mwd.nodes(mindMapData.nodes); // Überprüfe, ob diese Zeile korrekt funktioniert
-                isMindMapLoaded = true;
-            } else { 
-                console.log("loadMindMapFromFirestore - No data found, initializing default MindMap");
-                isMindMapLoaded = false;
-                initializeDefaultMindMap(mindMapName);
+                mwd.nodes(mindMapData.nodes);
+                console.log("MindMap data loaded from Firestore", { mindMapData });
+            } else {
+                console.error("No MindMap found in Firestore with the given ID.");
             }
         }).catch(error => {
-            console.error("loadMindMapFromFirestore - Error loading mindmap", error);
-            isMindMapLoaded = false;
-            initializeDefaultMindMap(mindMapName);
+            console.error("Error loading MindMap from Firestore", error);
         });
     } else {
-        console.log("loadMindMapFromFirestore - No user or MindMap ID, initializing default MindMap");
-        isMindMapLoaded = false;
-        initializeDefaultMindMap(mindMapName);
+        console.error("No user logged in or no mindMapId provided.");
     }
 }
 
@@ -281,30 +269,24 @@ btnClose.addEventListener('click', () => {
 /* END: out of box code */
 
 
-async function saveMindMapToFirestore(mindMapData) {
+function saveMindMapToFirestore(mindMapData) {
     console.log("saveMindMapToFirestore - Start", { mindMapData });
     const user = auth.currentUser;
     if (!user) {
         alert("You must be logged in to save mind maps.");
-        return Promise.reject("Not logged in"); // Gib ein abgelehntes Promise zurück, wenn der Benutzer nicht angemeldet ist.
+        return Promise.reject("Not logged in");
     }
 
     const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-    try {
-        if (currentMindMapId) {
-            const mindMapDocRef = doc(mindMapsRef, currentMindMapId);
-            await updateDoc(mindMapDocRef, mindMapData); // Warte auf das Update-Dokument
-            console.log("MindMap updated with ID: ", currentMindMapId);
-        } else {
-            const docRef = await addDoc(mindMapsRef, mindMapData); // Warte auf das Hinzufügen des Dokuments
+    return addDoc(mindMapsRef, mindMapData) // Verwende hier return, um das Promise zurückzugeben
+        .then(docRef => {
             console.log("MindMap added with ID: ", docRef.id);
-            currentMindMapId = docRef.id; // Speichern der neuen ID
-        }
-        return Promise.resolve(); // Gib ein erfülltes Promise zurück, wenn alles erfolgreich war.
-    } catch (error) {
-        console.error("Error saving mindmap: ", error);
-        return Promise.reject(error); // Gib ein abgelehntes Promise zurück, wenn ein Fehler auftritt.
-    }
+            return docRef.id; // Gib die neue ID zurück
+        })
+        .catch(error => {
+            console.error("Error saving mindmap: ", error);
+            return Promise.reject(error);
+        });
 }
 
 function deleteMindMapFromFirestore() {
