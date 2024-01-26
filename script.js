@@ -97,13 +97,17 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    initializeMindWired().then(() => { // Warte auf die Initialisierung, bevor du weitermachst
-        if (currentMindMapId) {
-            loadMindMapFromFirestore(mindMapName); // Übergebe den MindMap-Namen an die Load-Funktion
-        } else {
-            initializeDefaultMindMap(mindMapName); // Initialisiere die Default-MindMap mit dem übergebenen Namen
-        }
-    });
+    
+    // Verzögere die Initialisierung um eine kurze Zeit, um sicherzustellen, dass das DOM bereit ist
+    setTimeout(() => {
+        initializeMindWired().then(() => {
+            if (currentMindMapId) {
+                loadMindMapFromFirestore(mindMapName);
+            } else {
+                initializeDefaultMindMap(mindMapName);
+            }
+        });
+    }, 100); // Warte 100 Millisekunden
 }
 
 //done
@@ -123,12 +127,10 @@ function initializeMindWired() {
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
-        console.log("MindWired initialisiert");
     });
 }
 
 function loadMindMapFromFirestore(mindMapName) {
-    console.log("loadMindMapFromFirestore - Called", { mindMapName, currentMindMapId });
     const user = auth.currentUser;
 
     if (user && currentMindMapId) {
@@ -158,7 +160,6 @@ function loadMindMapFromFirestore(mindMapName) {
 }
 
 function getDefaultMindMapStructure(mindMapName) {
-    console.log("getDefaultMindMapStructure - Called", { mindMapName });
     return {
         model: {
             type: "text",
@@ -253,8 +254,13 @@ function getDefaultMindMapStructure(mindMapName) {
 
 // Modifizierte initializeDefaultMindMap, die die Standard-Daten zurückgibt
 function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
+    console.log("initializeDefaultMindMap - Called", { mindMapName });
+
     const defaultMindMapData = getDefaultMindMapStructure(mindMapName);
+    console.log("initializeDefaultMindMap - Default data obtained", { defaultMindMapData });
+
     mwd.nodes(defaultMindMapData); // Verwende die Standard-Daten, um die MindMap zu initialisieren
+    console.log("initializeDefaultMindMap - MindWired nodes initialized");
 }
 
 /* START: out of box code */
