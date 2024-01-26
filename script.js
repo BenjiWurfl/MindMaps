@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, getDoc, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -98,8 +98,8 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
-        showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
+        showMindMapEditorPage(selectedMindMap.data.name);
+        loadMindMapFromFirestore(selectedMindMap.id); // Verwende die MindMap-ID hier
     }
 }
 
@@ -119,31 +119,35 @@ function initializeMindWired(mindMapName) {
     });
 }
 
-function loadMindMapFromFirestore(mindMapName) {
+function loadMindMapFromFirestore(mindMapId) {
     const user = auth.currentUser;
     if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            if (!querySnapshot.empty && !currentMindMapId) {
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData);
+        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
+        getDoc(mindMapDocRef).then(docSnapshot => {
+            if (docSnapshot.exists()) {
+                const mindMapData = docSnapshot.data();
+                currentMindMapId = mindMapId; // Setze die aktuelle MindMap-ID
+                mwd.nodes(mindMapData.nodes); // Lade die Knoten der MindMap
                 isMindMapLoaded = true;
-                console.log("MindMap erfolgreich geladen und gesetzt");
-            } else if (!currentMindMapId) {
-                console.log("Keine gespeicherte MindMap gefunden oder neue MindMap, initialisiere Standard-MindMap");
-                initializeDefaultMindMap(mindMapName); // Übergebe den MindMap-Namen
+                console.log("MindMap erfolgreich geladen und gesetzt: ", mindMapData.name);
+            } else {
+                // Dieser Fall sollte normalerweise nicht eintreten, da eine MindMap ohne Daten nicht existieren sollte.
+                console.log("MindMap-Dokument existiert nicht, kann nicht geladen werden.");
+                isMindMapLoaded = false;
+                initializeDefaultMindMap(mindMapName);
+                // Du könntest hier eine Funktion aufrufen, um zur MindMap-Liste zurückzukehren oder eine Fehlermeldung anzuzeigen.
             }
         }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-            isMindMapLoaded = false; // Im Fehlerfall auch keine MindMap geladen
+            console.error("Fehler beim Laden der MindMap: ", error);
+            isMindMapLoaded = false;
             initializeDefaultMindMap(mindMapName);
+            // Behandle den Fehler entsprechend, z.B. zeige eine Fehlermeldung an oder gehe zurück zur Liste.
         });
     } else {
         console.log("Benutzer nicht angemeldet, kann MindMap nicht laden");
-        isMindMapLoaded = false; // Benutzer ist nicht angemeldet, also keine MindMap geladen
+        isMindMapLoaded = false;
         initializeDefaultMindMap(mindMapName);
+        // Auch hier könntest du eine Rückkehr zur Liste oder eine Aufforderung zur Anmeldung einbauen.
     }
 }
 
