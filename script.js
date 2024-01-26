@@ -97,17 +97,16 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
-    
-    // Verzögere die Initialisierung um eine kurze Zeit, um sicherzustellen, dass das DOM bereit ist
-    setTimeout(() => {
-        initializeMindWired().then(() => {
-            if (currentMindMapId) {
-                loadMindMapFromFirestore(mindMapName);
-            } else {
-                initializeDefaultMindMap(mindMapName);
-            }
-        });
-    }, 100); // Warte 100 Millisekunden
+    initializeMindWired().then(() => {
+        // Warte auf die Initialisierung, bevor du weitermachst
+        if (!currentMindMapId) {
+            // Wenn keine currentMindMapId vorhanden ist, initialisiere eine neue Default-MindMap
+            initializeDefaultMindMap(mindMapName);
+        } else {
+            // Wenn eine currentMindMapId vorhanden ist, lade die MindMap aus Firestore
+            loadMindMapFromFirestore();
+        }
+    });
 }
 
 //done
