@@ -306,7 +306,6 @@ function deleteMindMapFromFirestore() {
 }
 
 // Event-Listener für die Interaktion
-document.getElementById("create-new-mindmap").addEventListener("click", createNewMindMap);
 document.getElementById("back-to-list").addEventListener("click", showMindMapListPage);
 
 // Event-Listener zum Speichern der MindMap
