@@ -84,36 +84,35 @@ function createNewMindMap() {
     }
 }
 
+//done
 function navigateToMindMap(mindMapId) {
-    console.log("navigateToMindMap - Start", { mindMapId }); // Loggen des Starts der Funktion und der übergebenen MindMap ID
-
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
-    console.log("navigateToMindMap - Selected MindMap:", selectedMindMap); // Loggen der gefundenen MindMap
-
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
         const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
-        console.log("navigateToMindMap - Navigating to MindMap", { currentMindMapId, mindMapName }); // Loggen der ID und des Namens der MindMap, zu der navigiert wird
-
         showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
-    } else {
-        console.log("navigateToMindMap - No MindMap found with given ID", { mindMapId }); // Loggen, wenn keine MindMap mit der gegebenen ID gefunden wurde
     }
 }
 
-//done
+
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
+    console.log("showMindMapEditorPage - Start", { mindMapName }); // Loggen des Starts der Funktion und des übergebenen MindMap-Namens
+
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
+    console.log("showMindMapEditorPage - MindWired deinitialized"); // Loggen der Deinitialisierung
+
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
+    console.log("showMindMapEditorPage - UI updated to show editor page"); // Loggen des UI-Updates
+
     initializeMindWired().then(() => {
-        // Warte auf die Initialisierung, bevor du weitermachst
+        console.log("showMindMapEditorPage - MindWired initialized"); // Loggen der erfolgreichen Initialisierung von MindWired
         if (!currentMindMapId) {
-            // Wenn keine currentMindMapId vorhanden ist, initialisiere eine neue Default-MindMap
-            initializeDefaultMindMap(mindMapName);
+            console.log("showMindMapEditorPage - No current MindMap ID, initializing default MindMap");
+            initializeDefaultMindMap(mindMapName); // Initialisiere eine neue Default-MindMap
         } else {
-            // Wenn eine currentMindMapId vorhanden ist, lade die MindMap aus Firestore
-            loadMindMapFromFirestore();
+            console.log("showMindMapEditorPage - Current MindMap ID exists, loading MindMap from Firestore", { currentMindMapId });
+            loadMindMapFromFirestore(); // Lade die MindMap aus Firestore
         }
     });
 }
