@@ -288,6 +288,7 @@ btnClose.addEventListener('click', () => {
 
 
 async function saveMindMapToFirestore(mindMapData) {
+    deinitializeMindWired();
     console.log("saveMindMapToFirestore - Start", { mindMapData });
     const user = auth.currentUser;
     if (!user) {
