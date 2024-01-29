@@ -111,19 +111,15 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     });
 }
 
+//done
 function deinitializeMindWired() {
-    console.log("deinitializeMindWired - Start"); // Loggen des Starts der Funktion
-
+    // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
     const mmapRoot = document.querySelector("#mmap-root");
     if (mmapRoot) {
         mmapRoot.innerHTML = '';
-        console.log("deinitializeMindWired - mmap-root cleared"); // Loggen der erfolgreichen Entfernung der Kinder von mmap-root
-    } else {
-        console.log("deinitializeMindWired - mmap-root not found"); // Loggen, wenn mmap-root nicht gefunden wurde
     }
-
+    // Setze die Variable mwd zurück
     mwd = null;
-    console.log("deinitializeMindWired - mwd set to null"); // Loggen des Zurücksetzens der Variable mwd
 }
 
 function initializeMindWired() {
@@ -132,6 +128,7 @@ function initializeMindWired() {
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
+        console.log("MindWired initialisiert");
     });
 }
 
@@ -286,9 +283,8 @@ btnClose.addEventListener('click', () => {
 })
 /* END: out of box code */
 
-
+//NOTE: Zuerst wird die MindMap gespeichert dann erst deinitializeMindWired() --> macht keinen Sinn
 async function saveMindMapToFirestore(mindMapData) {
-    deinitializeMindWired();
     console.log("saveMindMapToFirestore - Start", { mindMapData });
     const user = auth.currentUser;
     if (!user) {
