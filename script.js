@@ -95,18 +95,25 @@ function loadMindMapFromFirestore() {
             if (querySnapshot.empty) {
                 console.log("Keine gespeicherte MindMap gefunden, initialisiere Standard-MindMap");
                 isMindMapLoaded = false; // Da keine MindMap geladen wurde
-                getDefaultMindMapStructure(mindMapName);
+                initializeDefaultMindMap("Default MindMap");
             }
         }).catch(error => {
             console.error("Error loading mindmaps: ", error);
             isMindMapLoaded = false; // Im Fehlerfall auch keine MindMap geladen
-            getDefaultMindMapStructure(mindMapName);
+            initializeDefaultMindMap(mindMapName);
         });
     } else {
         console.log("Benutzer nicht angemeldet, kann MindMap nicht laden");
         isMindMapLoaded = false; // Benutzer ist nicht angemeldet, also keine MindMap geladen
-        getDefaultMindMapStructure(mindMapName);
+        initializeDefaultMindMap(mindMapName);
     }
+}
+
+
+function initializeDefaultMindMap(mindMapName) {
+    const defaultStructure = getDefaultMindMapStructure(mindMapName);
+    mwd.nodes(defaultStructure);
+    // Hier sollten Sie auch die Logik hinzufügen, um diese Struktur in Firestore zu speichern, falls gewünscht
 }
 
 function getDefaultMindMapStructure(mindMapName) {
