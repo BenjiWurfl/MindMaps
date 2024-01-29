@@ -95,7 +95,7 @@ function navigateToMindMap(mindMapId) {
 }
 
 
-function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
+function showMindMapEditorPage(mindMapName) {
     console.log("showMindMapEditorPage - Start", { mindMapName }); // Loggen des Starts der Funktion und des übergebenen MindMap-Namens
 
     deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
