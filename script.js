@@ -53,6 +53,7 @@ function loadMindMapEditor(mindMapId) {
         getDoc(mindMapDocRef).then(doc => {
             if (doc.exists()) {
                 const mindMapData = doc.data();
+                console.log("Geladene MindMap-Daten:", mindMapData);
                 mwd.nodes(mindMapData);
                 isMindMapLoaded = true;
                 currentMindMapId = mindMapId;
