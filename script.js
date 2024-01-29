@@ -297,11 +297,13 @@ async function saveMindMapToFirestore(mindMapData) {
 
     const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
     try {
-        if (currentMindMapId && currentMindMapId !== tempMindMapData) {
+        if (currentMindMapId) {
+            // Aktualisiere eine bestehende MindMap
             const mindMapDocRef = doc(mindMapsRef, currentMindMapId);
             await updateDoc(mindMapDocRef, mindMapData);
             console.log("MindMap updated with ID: ", currentMindMapId);
         } else {
+            // Füge eine neue MindMap hinzu
             const docRef = await addDoc(mindMapsRef, mindMapData);
             console.log("MindMap added with ID: ", docRef.id);
             currentMindMapId = docRef.id; // Aktualisiere currentMindMapId mit der neuen ID
@@ -312,6 +314,7 @@ async function saveMindMapToFirestore(mindMapData) {
         return Promise.reject(error);
     }
 }
+
 
 function deleteMindMapFromFirestore() {
     const user = auth.currentUser;
