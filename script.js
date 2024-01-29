@@ -66,20 +66,32 @@ function updateMindMapListUI() {
 }
 
 function createNewMindMap() {
+    console.log("createNewMindMap - Start"); // Logge den Start der Funktion
     const mindMapName = prompt("Please enter a name for the new mind map:");
+    console.log("createNewMindMap - MindMap Name:", mindMapName); // Logge den eingegebenen Namen
+
     if (mindMapName) {
         currentMindMapId = null;
+        console.log("createNewMindMap - Current MindMap ID reset to null");
+
         const defaultMindMapData = {
             name: mindMapName,
             nodes: getDefaultMindMapStructure(mindMapName) // Erhalte die Standard-Datenstruktur
         };
+        console.log("createNewMindMap - Default MindMap Data:", defaultMindMapData); // Logge die Standard-MindMap-Daten
+
         saveMindMapToFirestore(defaultMindMapData)
             .then(() => {
+                console.log("createNewMindMap - MindMap saved successfully, showing editor page");
                 showMindMapEditorPage(mindMapName);
             })
             .catch(error => {
                 console.error("Error creating new mindmap: ", error);
+                // Logge zusätzliche Informationen, falls verfügbar
+                console.error("createNewMindMap - Error Details:", { mindMapName, defaultMindMapData });
             });
+    } else {
+        console.log("createNewMindMap - No name entered, function exited");
     }
 }
 
@@ -109,7 +121,6 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
     });
 }
 
-//done
 function deinitializeMindWired() {
     // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
     const mmapRoot = document.querySelector("#mmap-root");
