@@ -259,7 +259,7 @@ function getDefaultMindMapStructure(mindMapName) {
 }
 
 // Modifizierte initializeDefaultMindMap, die die Standard-Daten zurückgibt
-function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
+function initializeDefaultMindMap(mindMapName) {
     console.log("initializeDefaultMindMap - Called", { mindMapName });
 
     const defaultMindMapData = getDefaultMindMapStructure(mindMapName);
