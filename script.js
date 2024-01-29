@@ -113,14 +113,20 @@ function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
 
 //done
 function deinitializeMindWired() {
-    // Entferne alle Kinder vom #mmap-root, um die Instanz zurückzusetzen
+    console.log("deinitializeMindWired - Start"); // Loggen des Starts der Funktion
+
     const mmapRoot = document.querySelector("#mmap-root");
     if (mmapRoot) {
         mmapRoot.innerHTML = '';
+        console.log("deinitializeMindWired - mmap-root cleared"); // Loggen der erfolgreichen Entfernung der Kinder von mmap-root
+    } else {
+        console.log("deinitializeMindWired - mmap-root not found"); // Loggen, wenn mmap-root nicht gefunden wurde
     }
-    // Setze die Variable mwd zurück
+
     mwd = null;
+    console.log("deinitializeMindWired - mwd set to null"); // Loggen des Zurücksetzens der Variable mwd
 }
+
 
 function initializeMindWired() {
     return window.mindwired.init({
