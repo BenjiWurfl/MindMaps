@@ -96,16 +96,13 @@ function navigateToMindMap(mindMapId) {
 
 //done -NOTE: Wird immer loadMindMapFromFirestore aufgerufen, weil die MindMap vorher gespeichert wird
 function showMindMapEditorPage(mindMapName = "Unbenannte MindMap") {
-    deinitializeMindWired(); // Deinitialisiere zuerst die MindWired-Instanz
+    // Entfernen Sie deinitializeMindWired von hier
     document.getElementById("mindmap-list-page").style.display = "none";
     document.getElementById("mindmap-editor-page").style.display = "block";
     initializeMindWired().then(() => {
-        // Warte auf die Initialisierung, bevor du weitermachst
         if (!currentMindMapId) {
-            // Wenn keine currentMindMapId vorhanden ist, initialisiere eine neue Default-MindMap
             initializeDefaultMindMap(mindMapName);
         } else {
-            // Wenn eine currentMindMapId vorhanden ist, lade die MindMap aus Firestore
             loadMindMapFromFirestore();
         }
     });
@@ -344,13 +341,11 @@ document.getElementById("back-to-list").addEventListener("click", showMindMapLis
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
-    // Zuerst MindWired deinitialisieren
-    deinitializeMindWired();
-
-    // Dann die MindMap speichern
     mwd.export().then(json => {
         saveMindMapToFirestore(JSON.parse(json)).then(() => {
-            // Nach dem Speichern die MindMap-Liste erneut anzeigen
+            // Nach dem Speichern deinitialisiere MindWired
+            deinitializeMindWired();
+            // Anzeigen der MindMap-Liste
             showMindMapListPage();
         });
     });
