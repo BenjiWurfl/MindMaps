@@ -341,16 +341,18 @@ document.getElementById("back-to-list").addEventListener("click", showMindMapLis
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
-    // Zuerst MindWired deinitialisieren
-    deinitializeMindWired();
-
-    // Dann die MindMap speichern
-    mwd.export().then(json => {
-        saveMindMapToFirestore(JSON.parse(json)).then(() => {
-            // Nach dem Speichern die MindMap-Liste erneut anzeigen
-            showMindMapListPage();
+    // Exportiere die MindMap-Daten
+    if (mwd) {
+        mwd.export().then(json => {
+            saveMindMapToFirestore(JSON.parse(json)).then(() => {
+                // Nach dem Speichern deinitialisiere MindWired und zeige die MindMap-Liste an
+                deinitializeMindWired();
+                showMindMapListPage();
+            });
         });
-    });
+    } else {
+        console.error("Error: MindWired instance (mwd) is not initialized");
+    }
 });
 
 
