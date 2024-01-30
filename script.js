@@ -343,7 +343,11 @@ function deleteMindMapFromFirestore() {
 
 // Event-Listener für die Interaktion
 document.getElementById("create-new-mindmap").addEventListener("click", createNewMindMap);
-document.getElementById("back-to-list").addEventListener("click", showMindMapListPage);
+// Event-Listener für "Zurück zur Liste"
+document.getElementById("back-to-list").addEventListener("click", () => {
+    deinitializeMindWired(); // MindWired-Instanz deinitialisieren
+    showMindMapListPage(); // Zurück zur Liste der MindMaps
+});
 
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');
@@ -353,16 +357,14 @@ saveBtn.addEventListener('click', () => {
             saveMindMapToFirestore(JSON.parse(json)).then(() => {
                 // Nach dem Speichern eine Bestätigung anzeigen
                 alert("MindMap saved successfully.");
-                // Optional: An dieser Stelle könnten Sie weitere Aktionen durchführen,
-                // z.B. die Seite aktualisieren oder den Nutzer auf eine andere Seite leiten.
+                deinitializeMindWired(); // MindWired-Instanz deinitialisieren
+                showMindMapListPage(); // Zurück zur Liste der MindMaps
             });
         });
     } else {
         console.error("Error: MindWired instance (mwd) is not initialized");
     }
 });
-
-
 
 // Event-Listener zum Löschen der MindMap
 const deleteBtn = document.querySelector('[data-cmd="delete"]');
