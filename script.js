@@ -74,26 +74,36 @@ document.getElementById("create-new-mindmap").addEventListener("click", () => {
     }
 });
 
-function createNewMindMap(name) {
+function createNewMindMap(mindMapName) {
     const user = auth.currentUser;
     if (user) {
+        // Erzeuge die Struktur mit dem gegebenen Namen.
+        const mindMapStructure = defaultMindMapStructure(mindMapName);
+
+        // Erzeuge das zu speichernde Objekt.
         const mindMapData = {
-            name: name,
-            structure: defaultMindMapStructure(name) // Änderung hier
+            name: mindMapName, // Der Name der MindMap.
+            ...mindMapStructure // Die Struktur der MindMap, ausgebreitet auf der obersten Ebene des Objekts.
         };
 
+        // Logge das zu speichernde Objekt, um sicherzustellen, dass es korrekt ist.
+        console.log("MindMap Data to be saved:", mindMapData);
+
+        // Referenz auf die MindMaps in Firestore.
         const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+
+        // Füge das neue Dokument zu Firestore hinzu.
         addDoc(mindMapsRef, mindMapData).then(docRef => {
             console.log("New MindMap created with ID: ", docRef.id);
-            updateMindMapList(); // Liste aktualisieren
-            loadMindMap(docRef.id); // Die neue MindMap laden
+            // Aktualisiere die Liste der MindMaps.
+            updateMindMapList();
+            // Lade die neue MindMap.
+            loadMindMap(docRef.id);
         }).catch(error => {
             console.error("Error creating new mindmap: ", error);
         });
     }
 }
-
-
 
 function loadMindMap(mindMapId) {
     const user = auth.currentUser;
