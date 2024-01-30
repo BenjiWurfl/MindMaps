@@ -292,24 +292,31 @@ async function saveMindMapToFirestore(mindMapData) {
     const user = auth.currentUser;
     if (!user) {
         alert("You must be logged in to save mind maps.");
-        return Promise.reject("Not logged in"); // Gib ein abgelehntes Promise zurück, wenn der Benutzer nicht angemeldet ist.
+        return Promise.reject("Not logged in");
     }
 
     const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
     try {
+        // Stellen Sie sicher, dass die Datenstruktur konsistent ist, bevor sie gespeichert wird.
+        // Wenn mindMapData.nodes ein Objekt ist und eine 'model'-Eigenschaft hat, 
+        // verwenden Sie es direkt; andernfalls nehmen Sie an, dass es bereits das richtige Format hat.
+        const formattedData = mindMapData.nodes && mindMapData.nodes.model 
+            ? mindMapData.nodes 
+            : mindMapData;
+
         if (currentMindMapId) {
             const mindMapDocRef = doc(mindMapsRef, currentMindMapId);
-            await updateDoc(mindMapDocRef, mindMapData); // Warte auf das Update-Dokument
+            await updateDoc(mindMapDocRef, formattedData);
             console.log("MindMap updated with ID: ", currentMindMapId);
         } else {
-            const docRef = await addDoc(mindMapsRef, mindMapData); // Warte auf das Hinzufügen des Dokuments
+            const docRef = await addDoc(mindMapsRef, formattedData);
             console.log("MindMap added with ID: ", docRef.id);
-            currentMindMapId = docRef.id; // Speichern der neuen ID
+            currentMindMapId = docRef.id;
         }
-        return Promise.resolve(); // Gib ein erfülltes Promise zurück, wenn alles erfolgreich war.
+        return Promise.resolve();
     } catch (error) {
         console.error("Error saving mindmap: ", error);
-        return Promise.reject(error); // Gib ein abgelehntes Promise zurück, wenn ein Fehler auftritt.
+        return Promise.reject(error);
     }
 }
 
