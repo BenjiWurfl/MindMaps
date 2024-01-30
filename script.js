@@ -341,13 +341,13 @@ document.getElementById("back-to-list").addEventListener("click", showMindMapLis
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
-    // Exportiere die MindMap-Daten
     if (mwd) {
         mwd.export().then(json => {
             saveMindMapToFirestore(JSON.parse(json)).then(() => {
-                // Nach dem Speichern deinitialisiere MindWired und zeige die MindMap-Liste an
-                deinitializeMindWired();
-                showMindMapListPage();
+                // Nach dem Speichern eine Bestätigung anzeigen
+                alert("MindMap saved successfully.");
+                // Optional: An dieser Stelle könnten Sie weitere Aktionen durchführen,
+                // z.B. die Seite aktualisieren oder den Nutzer auf eine andere Seite leiten.
             });
         });
     } else {
