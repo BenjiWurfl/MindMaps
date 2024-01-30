@@ -82,7 +82,6 @@ function createNewMindMap(mindMapName) {
 
         // Erzeuge das zu speichernde Objekt.
         const mindMapData = {
-            name: mindMapName, // Der Name der MindMap.
             ...mindMapStructure // Die Struktur der MindMap, ausgebreitet auf der obersten Ebene des Objekts.
         };
 
