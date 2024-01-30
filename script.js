@@ -341,15 +341,18 @@ document.getElementById("back-to-list").addEventListener("click", showMindMapLis
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
+    // Zuerst MindWired deinitialisieren
+    deinitializeMindWired();
+
+    // Dann die MindMap speichern
     mwd.export().then(json => {
         saveMindMapToFirestore(JSON.parse(json)).then(() => {
-            // Nach dem Speichern deinitialisiere MindWired
-            deinitializeMindWired();
-            // Anzeigen der MindMap-Liste
+            // Nach dem Speichern die MindMap-Liste erneut anzeigen
             showMindMapListPage();
         });
     });
 });
+
 
 
 // Event-Listener zum Löschen der MindMap
