@@ -77,8 +77,12 @@ document.getElementById("create-new-mindmap").addEventListener("click", () => {
 function createNewMindMap(name) {
     const user = auth.currentUser;
     if (user) {
+        const mindMapData = {
+            name: name,
+            structure: defaultMindMapStructure(name) // Änderung hier
+        };
+
         const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        const mindMapData = { name: name, ...defaultMindMapStructure(name) };
         addDoc(mindMapsRef, mindMapData).then(docRef => {
             console.log("New MindMap created with ID: ", docRef.id);
             updateMindMapList(); // Liste aktualisieren
@@ -88,6 +92,7 @@ function createNewMindMap(name) {
         });
     }
 }
+
 
 
 function loadMindMap(mindMapId) {
