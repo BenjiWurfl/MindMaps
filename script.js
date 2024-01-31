@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, getDoc, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -16,6 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+let myDiagram;
 let currentMindMapId = null;
 let mwd;
 let isMindMapLoaded = false;
@@ -28,109 +29,13 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        updateMindMapList(); 
-        document.getElementById("mindmap-list-page").style.display = "block";
-        document.getElementById("mindmap-editor-page").style.display = "none";
+        initializeMindWired(); // Initialisiere MindWired
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
     }
 });
 
-function updateMindMapList() {
-    const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            const mindMapListElement = document.getElementById("mindmap-list");
-            mindMapListElement.innerHTML = ""; // Liste leeren, um sie zu aktualisieren
-
-            querySnapshot.forEach(doc => {
-                const mindMapData = doc.data();
-                const mindMapItem = document.createElement("div");
-                mindMapItem.textContent = mindMapData.name; // Angenommen, jeder MindMap-Datensatz hat ein 'name'-Feld
-                mindMapItem.classList.add("mindmap-list-item");
-
-                // Klicken auf ein MindMap-Listenelement lädt die entsprechende MindMap
-                mindMapItem.onclick = () => {
-                    loadMindMap(doc.id);
-                    // Wechsel zur MindMap-Editor-Seite
-                    document.getElementById("mindmap-list-page").style.display = "none";
-                    document.getElementById("mindmap-editor-page").style.display = "block";
-                };
-
-                mindMapListElement.appendChild(mindMapItem);
-            });
-        }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-        });
-    }
-}
-
-document.getElementById("create-new-mindmap").addEventListener("click", () => {
-    const mindMapName = prompt("Enter the name of the new MindMap:");
-    if (mindMapName) {
-        createNewMindMap(mindMapName);
-    }
-});
-
-function createNewMindMap(mindMapName) {
-    const user = auth.currentUser;
-    if (user) {
-        // Erzeuge die Struktur mit dem gegebenen Namen.
-        const mindMapStructure = defaultMindMapStructure(mindMapName);
-
-        // Erzeuge das zu speichernde Objekt.
-        const mindMapData = {
-            ...mindMapStructure // Die Struktur der MindMap, ausgebreitet auf der obersten Ebene des Objekts.
-        };
-
-        // Logge das zu speichernde Objekt, um sicherzustellen, dass es korrekt ist.
-        console.log("MindMap Data to be saved:", mindMapData);
-
-        // Referenz auf die MindMaps in Firestore.
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-
-        // Füge das neue Dokument zu Firestore hinzu.
-        addDoc(mindMapsRef, mindMapData).then(docRef => {
-            console.log("New MindMap created with ID: ", docRef.id);
-            // Aktualisiere die Liste der MindMaps.
-            updateMindMapList();
-            // Lade die neue MindMap.
-            loadMindMap(docRef.id);
-        }).catch(error => {
-            console.error("Error creating new mindmap: ", error);
-        });
-    }
-}
-
-function loadMindMap(mindMapId) {
-    const user = auth.currentUser;
-    if (user) {
-        initializeMindWired(); // MindWired initialisieren, bevor die MindMap geladen wird
-        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
-        getDoc(mindMapDocRef).then(doc => {
-            if (doc.exists()) {
-                const mindMapData = doc.data();
-                mwd.nodes(mindMapData);
-                currentMindMapId = doc.id;
-                isMindMapLoaded = true;
-                // Ansicht wechseln, um die MindMap anzuzeigen
-            } else {
-                console.log("MindMap not found");
-            }
-        }).catch(error => {
-            console.error("Error loading mindmap: ", error);
-        });
-    }
-}
-
-document.getElementById("back-to-list").addEventListener("click", () => {
-    // Wechseln Sie zur MindMap-Listenseite
-    document.getElementById("mindmap-list-page").style.display = "block";
-    document.getElementById("mindmap-editor-page").style.display = "none";
-    updateMindMapList(); // Liste aktualisieren
-});
 
 function initializeMindWired() {
     window.mindwired.init({
@@ -172,11 +77,12 @@ function loadMindMapFromFirestore() {
     }
 }
 
-function defaultMindMapStructure(mindMapName) {
-    return {
+function initializeDefaultMindMap() {
+    // Installieren der Standardknoten hier
+    mwd.nodes({
         model: {
             type: "text",
-            text: mindMapName,
+            text: "Thinkwise",
         },
         view: {
             x: 0,
@@ -262,18 +168,7 @@ function defaultMindMapStructure(mindMapName) {
                 ],
             },
         ],
-    };
-}
-
-// Modifizierte initializeDefaultMindMap, die die Standard-Daten zurückgibt
-function initializeDefaultMindMap(mindMapName = "Unbenannte MindMap") {
-    console.log("initializeDefaultMindMap - Called", { mindMapName });
-
-    const defaultMindMapData = defaultMindMapStructure(mindMapName);
-    console.log("initializeDefaultMindMap - Default data obtained", { defaultMindMapData });
-
-    mwd.nodes(defaultMindMapData); // Verwende die Standard-Daten, um die MindMap zu initialisieren
-    console.log("initializeDefaultMindMap - MindWired nodes initialized");
+    });
 }
 
 /* START: out of box code */
