@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, getDoc, getDocs, addDoc, deleteDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -16,7 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-let myDiagram;
 let currentMindMapId = null;
 let mwd;
 let isMindMapLoaded = false;
@@ -29,13 +28,64 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        initializeMindWired(); // Initialisiere MindWired
+        initializeMindWired(); // Nach Initialisierung, zeige MindMap-Liste
+        showMindMapList(); // Zeige die Liste der MindMaps an
     } else {
         console.log("No user is signed in.");
         redirectToLogin();
     }
 });
 
+function showMindMapList() {
+    document.getElementById('mindmap-editor-page').style.display = 'none';
+    document.getElementById('mindmap-list-page').style.display = 'block';
+    const mindMapListElement = document.getElementById('mindmap-list');
+    mindMapListElement.innerHTML = ''; // Vorhandene Einträge löschen
+
+    const user = auth.currentUser;
+    if (user) {
+        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+        getDocs(mindMapsRef).then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const mindMapData = doc.data();
+                const listItem = document.createElement('div');
+                listItem.textContent = mindMapData.name; // Angenommen, dass 'name' ein Feld im MindMap-Dokument ist
+                listItem.classList.add('mindmap-list-item');
+                listItem.addEventListener('click', () => loadMindMap(doc.id));
+                mindMapListElement.appendChild(listItem);
+            });
+        }).catch(error => {
+            console.error("Fehler beim Laden der MindMaps:", error);
+        });
+    }
+}
+
+function loadMindMap(mindMapId) {
+    const user = auth.currentUser;
+    const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
+    getDoc(mindMapDocRef).then(doc => {
+        if (doc.exists()) {
+            showMindMapEditor(doc.data()); // Funktion, um die Editor-Seite mit Daten zu zeigen
+            currentMindMapId = mindMapId; // Speichern der ID für spätere Operationen
+        } else {
+            console.log("MindMap existiert nicht");
+        }
+    }).catch(error => {
+        console.error("Fehler beim Laden der MindMap:", error);
+    });
+}
+
+function showMindMapEditor(mindMapData) {
+    document.getElementById('mindmap-list-page').style.display = 'none';
+    document.getElementById('mindmap-editor-page').style.display = 'block';
+
+    // Prüfe, ob MindWired-Instanz vorhanden und Daten gültig sind
+    if (mwd && mindMapData) {
+        mwd.nodes(mindMapData); // Setze die MindMap-Daten im Editor
+    } else {
+        console.error("MindWired-Instanz nicht initialisiert oder keine MindMap-Daten vorhanden.");
+    }
+}
 
 function initializeMindWired() {
     window.mindwired.init({
@@ -236,6 +286,24 @@ function deleteMindMapFromFirestore() {
             });
     }
 }
+
+document.getElementById('create-new-mindmap').addEventListener('click', () => {
+    const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
+    if (mindMapName) {
+        const user = auth.currentUser;
+        if (user) {
+            const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
+            addDoc(mindMapsRef, { name: mindMapName }).then(docRef => {
+                console.log("Neue MindMap erstellt mit ID:", docRef.id);
+                showMindMapList(); // Liste aktualisieren
+            }).catch(error => {
+                console.error("Fehler beim Erstellen der MindMap:", error);
+            });
+        }
+    }
+});
+
+document.getElementById('back-to-list').addEventListener('click', showMindMapList);
 
 // Event-Listener zum Speichern der MindMap
 const saveBtn = document.querySelector('[data-cmd="save"]');

@@ -243,6 +243,13 @@ canvas {
     gap: 10px; /* Definiert einen Abstand zwischen den Schaltflächen */
 }
 
+.mindmap-list-item {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
 /* Stil für die MindMap-Listenseite */
 #mindmap-list-page {
     display: flex;
@@ -300,3 +307,4 @@ canvas {
   #back-to-list:hover {
     background-color: #3730A3; /* Dunklere Farbe beim Hover, wie bei anderen Buttons */
   }
+  
