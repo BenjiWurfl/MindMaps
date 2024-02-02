@@ -158,6 +158,7 @@ function loadMindMapFromFirestore(mindMapId) {
         // Laden Sie die MindMap-Daten in den Editor
         mwd.nodes(mindMapData);
         console.log("MindMap erfolgreich geladen:", mindMapData);
+        showMindMapEditorPage(doc.data().name, mindMapData);
     }).catch(error => {
         console.error("Fehler beim Laden der MindMap:", error);
     });
