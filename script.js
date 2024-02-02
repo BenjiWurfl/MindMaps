@@ -82,10 +82,10 @@ function showMindMapEditor(mindMapData) {
     // Prüfe, ob MindWired-Instanz vorhanden und Daten gültig sind
     if (mwd && mindMapData) {
         // Wenn mindMapData eine zusätzliche Ebene hat (z.B. einen 'data' Schlüssel)
-        // mwd.nodes(mindMapData.data); // Angenommen, die eigentlichen MindMap-Daten sind unter 'data'
+        mwd.nodes(mindMapData.data); // Angenommen, die eigentlichen MindMap-Daten sind unter 'data'
         
         // Wenn mindMapData direkt die benötigten Daten enthält
-        mwd.nodes(mindMapData); // Direkte Nutzung, wenn mindMapData bereits die korrekte Struktur hat
+        //mwd.nodes(mindMapData); // Direkte Nutzung, wenn mindMapData bereits die korrekte Struktur hat
     } else {
         console.error("MindWired-Instanz nicht initialisiert oder keine MindMap-Daten vorhanden.");
     }
@@ -298,23 +298,24 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
         const user = auth.currentUser;
         if (user) {
             const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-            // Initialisiere die Default-Struktur für die neue MindMap
-            const defaultMindMapData = initializeDefaultMindMap(); // Diese Funktion muss die Struktur zurückgeben
-            const mindMapData = {
+            const defaultMindMapData = initializeDefaultMindMap(); // Holt die Default-Struktur
+            const mindMapDataToSave = {
                 name: mindMapName,
-                ...defaultMindMapData // Füge die Default-Struktur hinzu
+                data: defaultMindMapData // Speichert die Struktur zusammen mit dem Namen
             };
             try {
-                const docRef = await addDoc(mindMapsRef, mindMapData);
+                const docRef = await addDoc(mindMapsRef, mindMapDataToSave);
                 console.log("Neue MindMap erstellt mit ID:", docRef.id);
-                currentMindMapId = docRef.id; // Aktualisiere die aktuelle MindMap-ID
-                showMindMapEditor(mindMapData); // Zeige die MindMap im Editor
+                currentMindMapId = docRef.id;
+                // Bereite vor, die MindMap im Editor anzuzeigen
+                showMindMapEditor(mindMapDataToSave.data);
             } catch (error) {
                 console.error("Fehler beim Erstellen der MindMap:", error);
             }
         }
     }
 });
+
 
 document.getElementById('back-to-list').addEventListener('click', showMindMapList);
 
