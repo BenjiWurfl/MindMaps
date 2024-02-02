@@ -91,6 +91,7 @@ function navigateToMindMap(mindMapId) {
         currentMindMapId = selectedMindMap.id;
         // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
         loadMindMapFromFirestore(currentMindMapId);
+
     }
 }
 
@@ -140,6 +141,7 @@ function loadMindMapFromFirestore(mindMapId) {
                     if (mwd) {
                         mwd.nodes(mindMapData); // Lade die MindMap-Daten in den Editor
                         console.log("MindMap erfolgreich geladen:", mindMapData);
+                        showMindMapEditorPage(doc.data().name, mindMapData);
                     } else {
                         console.error("MindWired-Instanz ist nicht initialisiert.");
                     }
