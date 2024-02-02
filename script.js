@@ -81,7 +81,11 @@ function showMindMapEditor(mindMapData) {
 
     // Prüfe, ob MindWired-Instanz vorhanden und Daten gültig sind
     if (mwd && mindMapData) {
-        mwd.nodes(mindMapData); // Setze die MindMap-Daten im Editor
+        // Wenn mindMapData eine zusätzliche Ebene hat (z.B. einen 'data' Schlüssel)
+        // mwd.nodes(mindMapData.data); // Angenommen, die eigentlichen MindMap-Daten sind unter 'data'
+        
+        // Wenn mindMapData direkt die benötigten Daten enthält
+        mwd.nodes(mindMapData); // Direkte Nutzung, wenn mindMapData bereits die korrekte Struktur hat
     } else {
         console.error("MindWired-Instanz nicht initialisiert oder keine MindMap-Daten vorhanden.");
     }
@@ -128,8 +132,8 @@ function loadMindMapFromFirestore() {
 }
 
 function initializeDefaultMindMap() {
-    // Installieren der Standardknoten hier
-    mwd.nodes({
+    // Definiere die Struktur der Default-MindMap
+    const defaultMindMapStructure = {
         model: {
             type: "text",
             text: "Thinkwise",
@@ -218,7 +222,8 @@ function initializeDefaultMindMap() {
                 ],
             },
         ],
-    });
+    };
+    return defaultMindMapStructure;
 }
 
 /* START: out of box code */
@@ -287,18 +292,26 @@ function deleteMindMapFromFirestore() {
     }
 }
 
-document.getElementById('create-new-mindmap').addEventListener('click', () => {
+document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     if (mindMapName) {
         const user = auth.currentUser;
         if (user) {
             const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-            addDoc(mindMapsRef, { name: mindMapName }).then(docRef => {
+            // Initialisiere die Default-Struktur für die neue MindMap
+            const defaultMindMapData = initializeDefaultMindMap(); // Diese Funktion muss die Struktur zurückgeben
+            const mindMapData = {
+                name: mindMapName,
+                ...defaultMindMapData // Füge die Default-Struktur hinzu
+            };
+            try {
+                const docRef = await addDoc(mindMapsRef, mindMapData);
                 console.log("Neue MindMap erstellt mit ID:", docRef.id);
-                showMindMapList(); // Liste aktualisieren
-            }).catch(error => {
+                currentMindMapId = docRef.id; // Aktualisiere die aktuelle MindMap-ID
+                showMindMapEditor(mindMapData); // Zeige die MindMap im Editor
+            } catch (error) {
                 console.error("Fehler beim Erstellen der MindMap:", error);
-            });
+            }
         }
     }
 });
