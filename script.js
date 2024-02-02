@@ -134,23 +134,27 @@ function loadMindMapFromFirestore(mindMapId) {
         const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
         getDoc(mindMapDocRef).then(doc => {
             if (doc.exists()) {
-                const mindMapData = doc.data().data; // Stelle sicher, dass du die MindMap-Daten korrekt aus dem Dokument extrahierst
-                mwd.nodes(mindMapData); // Lade die MindMap-Daten in den Editor
-                console.log("MindMap erfolgreich geladen und gesetzt");
+                // Annahme: Die MindMap-Daten sind direkt unter dem Schlüssel 'data' gespeichert
+                const mindMapData = doc.data().data;
+                if(mindMapData) {
+                    // Stelle sicher, dass mwd bereits initialisiert wurde
+                    if (mwd) {
+                        mwd.nodes(mindMapData); // Lade die MindMap-Daten in den Editor
+                        console.log("MindMap erfolgreich geladen:", mindMapData);
+                    } else {
+                        console.error("MindWired-Instanz ist nicht initialisiert.");
+                    }
+                } else {
+                    console.error("MindMap-Daten sind undefiniert.");
+                }
             } else {
-                console.log("Keine gespeicherte MindMap gefunden, initialisiere Standard-MindMap");
-                isMindMapLoaded = false; // Da keine MindMap geladen wurde
-                initializeDefaultMindMap();
+                console.log("MindMap existiert nicht.");
             }
         }).catch(error => {
-            console.error("Error loading mindmaps: ", error);
-            isMindMapLoaded = false; // Im Fehlerfall auch keine MindMap geladen
-            initializeDefaultMindMap();
+            console.error("Fehler beim Laden der MindMap:", error);
         });
     } else {
-        console.log("Benutzer nicht angemeldet, kann MindMap nicht laden");
-        isMindMapLoaded = false; // Benutzer ist nicht angemeldet, also keine MindMap geladen
-        initializeDefaultMindMap();
+        console.log("Benutzer nicht angemeldet oder keine MindMap-ID angegeben.");
     }
 }
 
