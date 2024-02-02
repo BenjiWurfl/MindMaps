@@ -69,17 +69,16 @@ function updateMindMapListUI() {
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     if (mindMapName && auth.currentUser) {
-        // Initialisiere die Default-Struktur für die neue MindMap
-        const defaultMindMapData = initializeDefaultMindMap();
+        const defaultMindMapData = initializeDefaultMindMap(); // Korrektur: Rückgabewert verwenden
         const mindMapData = {
             name: mindMapName,
-            data: defaultMindMapData // Speichere die MindMap-Daten unter dem Schlüssel 'data'
+            data: defaultMindMapData // Stellen Sie sicher, dass dies nicht undefined ist
         };
         try {
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
-            currentMindMapId = docRef.id; // Aktualisiere die aktuelle MindMap-ID
-            showMindMapEditorPage(mindMapName, defaultMindMapData); // Zeige die MindMap im Editor
+            currentMindMapId = docRef.id;
+            showMindMapEditorPage(mindMapName, defaultMindMapData); // Übergeben der initialen Daten
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
@@ -159,8 +158,8 @@ function loadMindMapFromFirestore(mindMapId) {
 }
 
 function initializeDefaultMindMap() {
-    // Installieren der Standardknoten hier
-    mwd.nodes({
+    // Definiere die Struktur der Default-MindMap
+    const defaultMindMapStructure = {
         model: {
             type: "text",
             text: "Thinkwise",
@@ -249,7 +248,8 @@ function initializeDefaultMindMap() {
                 ],
             },
         ],
-    });
+    };
+    return defaultMindMapStructure;
 }
 
 /* START: out of box code */
