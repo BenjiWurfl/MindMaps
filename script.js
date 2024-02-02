@@ -135,6 +135,7 @@ function loadMindMapFromFirestore(mindMapId) {
         getDoc(mindMapDocRef).then(doc => {
             if (doc.exists()) {
                 // Annahme: Die MindMap-Daten sind direkt unter dem Schlüssel 'data' gespeichert
+                //Aktuell nur doc.data().data, wenn Namen noch dazu dann: doc.data().name
                 const mindMapData = doc.data().data;
                 if(mindMapData) {
                     // Stelle sicher, dass mwd bereits initialisiert wurde
@@ -326,7 +327,12 @@ document.getElementById('back-to-list').addEventListener('click', showMindMapLis
 const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
     mwd.export().then(json => {
-        saveMindMapToFirestore(JSON.parse(json));
+        const mindMapData = JSON.parse(json);
+        // Hier können Sie zusätzliche Validierungen hinzufügen, falls nötig
+        saveMindMapToFirestore({
+            name: "Aktueller Name der MindMap", // Aktualisieren Sie dies entsprechend
+            data: mindMapData // Hier speichern Sie die exportierten Daten
+        });
     });
 });
 
