@@ -69,16 +69,19 @@ function updateMindMapListUI() {
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     if (mindMapName && auth.currentUser) {
-        const defaultMindMapData = initializeDefaultMindMap(); // Korrektur: Rückgabewert verwenden
+        // Rufen Sie die Funktion auf, um die Default-MindMap-Struktur zu erhalten
+        const defaultMindMapData = initializeDefaultMindMap();
         const mindMapData = {
             name: mindMapName,
-            data: defaultMindMapData // Stellen Sie sicher, dass dies nicht undefined ist
+            data: defaultMindMapData
         };
+
         try {
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            showMindMapEditorPage(mindMapName, defaultMindMapData); // Übergeben der initialen Daten
+            // Leiten Sie den Benutzer direkt zum Editor mit den gerade erstellten Daten um
+            showMindMapEditorPage(mindMapName, defaultMindMapData);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
@@ -129,35 +132,35 @@ function initializeMindWired() {
 }
 
 function loadMindMapFromFirestore(mindMapId) {
-    const user = auth.currentUser;
-    if (user && mindMapId) {
-        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
-        getDoc(mindMapDocRef).then(doc => {
-            if (doc.exists()) {
-                // Annahme: Die MindMap-Daten sind direkt unter dem Schlüssel 'data' gespeichert
-                //Aktuell nur doc.data().data, wenn Namen noch dazu dann: doc.data().name
-                const mindMapData = doc.data().data;
-                if(mindMapData) {
-                    // Stelle sicher, dass mwd bereits initialisiert wurde
-                    if (mwd) {
-                        mwd.nodes(mindMapData); // Lade die MindMap-Daten in den Editor
-                        console.log("MindMap erfolgreich geladen:", mindMapData);
-                        showMindMapEditorPage(doc.data().name, mindMapData);
-                    } else {
-                        console.error("MindWired-Instanz ist nicht initialisiert.");
-                    }
-                } else {
-                    console.error("MindMap-Daten sind undefiniert.");
-                }
-            } else {
-                console.log("MindMap existiert nicht.");
-            }
-        }).catch(error => {
-            console.error("Fehler beim Laden der MindMap:", error);
-        });
-    } else {
+    if (!auth.currentUser || !mindMapId) {
         console.log("Benutzer nicht angemeldet oder keine MindMap-ID angegeben.");
+        return;
     }
+
+    const mindMapDocRef = doc(db, "users", auth.currentUser.uid, "mindmaps", mindMapId);
+    getDoc(mindMapDocRef).then(doc => {
+        if (!doc.exists()) {
+            console.log("MindMap existiert nicht.");
+            return;
+        }
+
+        const mindMapData = doc.data().data;
+        if (!mindMapData) {
+            console.error("MindMap-Daten sind undefiniert.");
+            return;
+        }
+
+        if (!mwd) {
+            console.error("MindWired-Instanz ist nicht initialisiert.");
+            return;
+        }
+
+        // Laden Sie die MindMap-Daten in den Editor
+        mwd.nodes(mindMapData);
+        console.log("MindMap erfolgreich geladen:", mindMapData);
+    }).catch(error => {
+        console.error("Fehler beim Laden der MindMap:", error);
+    });
 }
 
 function initializeDefaultMindMap() {
@@ -330,7 +333,7 @@ saveBtn.addEventListener('click', () => {
         const mindMapData = JSON.parse(json);
         // Hier können Sie zusätzliche Validierungen hinzufügen, falls nötig
         saveMindMapToFirestore({
-            name: "Aktueller Name der MindMap", // Aktualisieren Sie dies entsprechend
+            //name: "Aktueller Name der MindMap", // Aktualisieren Sie dies entsprechend
             data: mindMapData // Hier speichern Sie die exportierten Daten
         });
     });
