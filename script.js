@@ -90,8 +90,8 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        const mindMapName = selectedMindMap.data.name; // Hole den Namen der ausgewählten MindMap
-        showMindMapEditorPage(mindMapName); // Übergebe den Namen hier
+        // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
+        loadMindMapFromFirestore(currentMindMapId);
     }
 }
 
@@ -123,21 +123,19 @@ function initializeMindWired() {
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
-        loadMindMapFromFirestore(); // Versuche, die MindMap zu laden
+    }).catch(error => {
+        console.error("Fehler bei der Initialisierung von MindWired:", error);
     });
 }
 
-function loadMindMapFromFirestore() {
+function loadMindMapFromFirestore(mindMapId) {
     const user = auth.currentUser;
-    if (user) {
-        const mindMapsRef = collection(db, "users", user.uid, "mindmaps");
-        getDocs(mindMapsRef).then(querySnapshot => {
-            if (!querySnapshot.empty) {
-                const doc = querySnapshot.docs[0];
-                const mindMapData = doc.data();
-                currentMindMapId = doc.id;
-                mwd.nodes(mindMapData);
-                isMindMapLoaded = true;
+    if (user && mindMapId) {
+        const mindMapDocRef = doc(db, "users", user.uid, "mindmaps", mindMapId);
+        getDoc(mindMapDocRef).then(doc => {
+            if (doc.exists()) {
+                const mindMapData = doc.data().data; // Stelle sicher, dass du die MindMap-Daten korrekt aus dem Dokument extrahierst
+                mwd.nodes(mindMapData); // Lade die MindMap-Daten in den Editor
                 console.log("MindMap erfolgreich geladen und gesetzt");
             } else {
                 console.log("Keine gespeicherte MindMap gefunden, initialisiere Standard-MindMap");
