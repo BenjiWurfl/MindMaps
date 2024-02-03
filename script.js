@@ -92,9 +92,12 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        initializeMindWired();
-        // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
-        //loadMindMapFromFirestore(currentMindMapId); -> in initializeMindWired
+        // Stellen Sie sicher, dass mwd bereits initialisiert wurde
+        if (mwd) {
+            loadMindMapFromFirestore(currentMindMapId);
+        } else {
+            console.error("MindWired ist noch nicht initialisiert.");
+        }
     }
 }
 
@@ -120,11 +123,9 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
 }
 
 function initializeMindWired() {
-    // Prüfen, ob MindWired bereits initialisiert wurde
     if (!window.mwd) {
-        // Leeren des MindMap-Containers vor der Neuinitialisierung
         const mmapRoot = document.getElementById("mmap-root");
-        mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
+        mmapRoot.innerHTML = ''; // Bereitet den Container für die Initialisierung vor
 
         window.mindwired.init({
             el: "#mmap-root",
@@ -132,20 +133,12 @@ function initializeMindWired() {
         }).then((instance) => {
             mwd = instance;
             console.log("MindWired initialisiert");
-
-            // Laden der aktuellen MindMap, falls eine ID vorhanden ist
-            if (currentMindMapId) {
-                loadMindMapFromFirestore(currentMindMapId);
-            }
+            // Entfernen Sie den Aufruf von loadMindMapFromFirestore hier, wenn es zu Mehrfachinitialisierungen führt
         }).catch(error => {
             console.error("Fehler bei der Initialisierung von MindWired:", error);
         });
     } else {
         console.log("MindWired ist bereits initialisiert.");
-        // Optional: Laden der aktuellen MindMap, falls eine ID vorhanden ist, ohne erneute Initialisierung
-        if (currentMindMapId) {
-            loadMindMapFromFirestore(currentMindMapId);
-        }
     }
 }
 
