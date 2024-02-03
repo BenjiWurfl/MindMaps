@@ -119,28 +119,30 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
     }
 }
 
-function initializeMindWired(reload = false) {
-    // Prüfen, ob eine Neuladung erzwungen wird oder mwd noch nicht initialisiert ist
-    if (!window.mwd || reload) {
-        // Leeren des MindMap-Containers vor der Neuinitialisierung, falls notwendig
-        const mmapRoot = document.getElementById("mmap-root");
-        mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
+function initializeMindWired() {
+    // Leeren des MindMap-Containers vor der Neuinitialisierung
+    const mmapRoot = document.getElementById("mmap-root");
+    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
-        window.mindwired.init({
-            el: "#mmap-root",
-            ui: {width: '100%', height: 500},
-        }).then((instance) => {
-            mwd = instance;
-            console.log("MindWired initialisiert");
-
-            // Laden der aktuellen MindMap, falls eine ID vorhanden ist
-            if (currentMindMapId) {
-                loadMindMapFromFirestore(currentMindMapId);
-            }
-        }).catch(error => {
-            console.error("Fehler bei der Initialisierung von MindWired:", error);
-        });
+    if (window.mwd) {
+        // Logik zum Entfernen der alten Instanz, falls notwendig
+        // Dies könnte das Löschen von Event-Listeners oder anderen spezifischen Cleanup-Aktionen beinhalten
     }
+
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
+
+        // Laden der aktuellen MindMap, falls eine ID vorhanden ist
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(currentMindMapId);
+        }
+    }).catch(error => {
+        console.error("Fehler bei der Initialisierung von MindWired:", error);
+    });
 }
 
 function loadMindMapFromFirestore(mindMapId) {
