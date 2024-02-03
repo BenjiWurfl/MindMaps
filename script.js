@@ -120,14 +120,15 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
 }
 
 function initializeMindWired() {
+    // Prüfen, ob mwd bereits initialisiert wurde
+    if (mwd) {
+        console.log("MindWired ist bereits initialisiert. Keine erneute Initialisierung notwendig.");
+        return; // Frühzeitiger Abbruch, wenn MindWired bereits initialisiert ist
+    }
+
     // Leeren des MindMap-Containers vor der Neuinitialisierung
     const mmapRoot = document.getElementById("mmap-root");
     mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
-
-    if (window.mwd) {
-        // Logik zum Entfernen der alten Instanz, falls notwendig
-        // Dies könnte das Löschen von Event-Listeners oder anderen spezifischen Cleanup-Aktionen beinhalten
-    }
 
     window.mindwired.init({
         el: "#mmap-root",
