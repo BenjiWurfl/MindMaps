@@ -92,23 +92,13 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
+        initializeMindWired();
         // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
-        loadMindMapFromFirestore(currentMindMapId);
-
-    }
-}
-
-function clearMindWired() {
-    if (mwd && mwd.clear) { // Angenommen, es gibt eine clear-Methode
-        mwd.clear(); // Leert die MindWired-Instanz
-    } else {
-        // Reinitialisieren Sie MindWired, falls keine clear-Methode vorhanden ist
-        initializeMindWired(true); // Angenommen, die Funktion akzeptiert einen Parameter, um eine Neuinitialisierung zu erzwingen
+        //loadMindMapFromFirestore(currentMindMapId); -> in initializeMindWired
     }
 }
 
 function showMindMapEditorPage(mindMapName, mindMapData = null) {
-    clearMindWired();
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
@@ -129,16 +119,22 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
     }
 }
 
-function initializeMindWired(forceReinitialize = false) {
-    if (mwd && !forceReinitialize) {
-        return; // Verhindert eine Neuinitialisierung, wenn bereits initialisiert und keine Neuinitialisierung erzwungen wird
-    }
+function initializeMindWired() {
+    // Leeren des MindMap-Containers vor der Neuinitialisierung
+    const mmapRoot = document.getElementById("mmap-root");
+    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
+
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
+
+        // Laden der aktuellen MindMap, falls eine ID vorhanden ist
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(currentMindMapId);
+        }
     }).catch(error => {
         console.error("Fehler bei der Initialisierung von MindWired:", error);
     });
