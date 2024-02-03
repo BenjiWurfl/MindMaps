@@ -124,6 +124,11 @@ function initializeMindWired() {
     const mmapRoot = document.getElementById("mmap-root");
     mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
+    if (window.mwd) {
+        // Logik zum Entfernen der alten Instanz, falls notwendig
+        // Dies könnte das Löschen von Event-Listeners oder anderen spezifischen Cleanup-Aktionen beinhalten
+    }
+
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
