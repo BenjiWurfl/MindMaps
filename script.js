@@ -98,7 +98,17 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
+function clearMindWired() {
+    if (mwd && mwd.clear) { // Angenommen, es gibt eine clear-Methode
+        mwd.clear(); // Leert die MindWired-Instanz
+    } else {
+        // Reinitialisieren Sie MindWired, falls keine clear-Methode vorhanden ist
+        initializeMindWired(true); // Angenommen, die Funktion akzeptiert einen Parameter, um eine Neuinitialisierung zu erzwingen
+    }
+}
+
 function showMindMapEditorPage(mindMapName, mindMapData = null) {
+    clearMindWired();
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
@@ -119,7 +129,10 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
     }
 }
 
-function initializeMindWired() {
+function initializeMindWired(forceReinitialize = false) {
+    if (mwd && !forceReinitialize) {
+        return; // Verhindert eine Neuinitialisierung, wenn bereits initialisiert und keine Neuinitialisierung erzwungen wird
+    }
     window.mindwired.init({
         el: "#mmap-root",
         ui: {width: '100%', height: 500},
@@ -332,10 +345,9 @@ const saveBtn = document.querySelector('[data-cmd="save"]');
 saveBtn.addEventListener('click', () => {
     mwd.export().then(json => {
         const mindMapData = JSON.parse(json);
-        // Hier können Sie zusätzliche Validierungen hinzufügen, falls nötig
         saveMindMapToFirestore({
-            //name: "Aktueller Name der MindMap", // Aktualisieren Sie dies entsprechend
-            data: mindMapData // Hier speichern Sie die exportierten Daten
+            //name: "Aktueller Name der MindMap", 
+            data: mindMapData // Speichern der exportierten Daten
         });
     });
 });
