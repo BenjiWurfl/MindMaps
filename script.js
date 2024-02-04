@@ -92,7 +92,6 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        initializeMindWired();
         // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
         //loadMindMapFromFirestore(currentMindMapId); -> in initializeMindWired
     }
