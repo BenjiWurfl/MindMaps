@@ -122,6 +122,13 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
     }
 }
 
+function resetMindWired() {
+    if (mwd) {
+        // Versuchen Sie, die MindMap-Daten auf einen leeren Zustand zu setzen
+        mwd.nodes([]);
+    }
+}
+
 function initializeMindWired() {
     if (!window.mwd) {
         const mmapRoot = document.getElementById("mmap-root");
@@ -165,6 +172,8 @@ function loadMindMapFromFirestore(mindMapId) {
             console.error("MindWired-Instanz ist nicht initialisiert.");
             return;
         }
+
+        resetMindWired();
 
         // Laden Sie die MindMap-Daten in den Editor
         mwd.nodes(mindMapData);
