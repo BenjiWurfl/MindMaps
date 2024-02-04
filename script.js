@@ -99,7 +99,7 @@ function navigateToMindMap(mindMapId) {
 
 function showMindMapEditorPage(mindMapName, mindMapData = null) {
     initializeMindWired();
-    
+
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
@@ -121,26 +121,24 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
 }
 
 function initializeMindWired() {
-    // Überprüfen Sie, ob mwd bereits initialisiert wurde
-    if (!mwd) {
-        const mmapRoot = document.getElementById("mmap-root");
-        mmapRoot.innerHTML = ''; // Bereiten Sie den Container für eine neue Instanz vor
+    // Leeren des MindMap-Containers vor der Neuinitialisierung
+    const mmapRoot = document.getElementById("mmap-root");
+    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
-        window.mindwired.init({
-            el: "#mmap-root",
-            ui: {width: '100%', height: 500},
-        }).then((instance) => {
-            mwd = instance;
-            console.log("MindWired initialisiert");
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
 
-            // Laden der aktuellen MindMap, falls eine ID vorhanden ist
-            if (currentMindMapId) {
-                loadMindMapFromFirestore(currentMindMapId);
-            }
-        }).catch(error => {
-            console.error("Fehler bei der Initialisierung von MindWired:", error);
-        });
-    }
+        // Laden der aktuellen MindMap, falls eine ID vorhanden ist
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(currentMindMapId);
+        }
+    }).catch(error => {
+        console.error("Fehler bei der Initialisierung von MindWired:", error);
+    });
 }
 
 function loadMindMapFromFirestore(mindMapId) {
