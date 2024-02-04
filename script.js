@@ -29,7 +29,7 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        //initializeMindWired();
+        initializeMindWired();
         showMindMapListPage();
     } else {
         console.log("No user is signed in.");
@@ -92,14 +92,9 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-
-        // Überprüfen, ob MindWired bereits initialisiert wurde
-        if (!mwd) {
-            initializeMindWired(); // Initialisiere MindWired, falls noch nicht geschehen
-        }
-
-        // Lade die MindMap direkt aus Firestore
-        loadMindMapFromFirestore(currentMindMapId);
+        initializeMindWired();
+        // Statt den Namen zu übergeben, lade die MindMap direkt aus Firestore
+        //loadMindMapFromFirestore(currentMindMapId); -> in initializeMindWired
     }
 }
 
@@ -125,21 +120,29 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
 }
 
 function initializeMindWired() {
-    // Leeren des MindMap-Containers vor der Neuinitialisierung, falls notwendig
-    if (!mwd) {
-        const mmapRoot = document.getElementById("mmap-root");
-        mmapRoot.innerHTML = ''; // Bereitet den Container vor
+    // Leeren des MindMap-Containers vor der Neuinitialisierung
+    const mmapRoot = document.getElementById("mmap-root");
+    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
-        window.mindwired.init({
-            el: "#mmap-root",
-            ui: {width: '100%', height: 500},
-        }).then((instance) => {
-            mwd = instance;
-            console.log("MindWired initialisiert");
-        }).catch(error => {
-            console.error("Fehler bei der Initialisierung von MindWired:", error);
-        });
+    if (window.mwd) {
+        // Logik zum Entfernen der alten Instanz, falls notwendig
+        // Dies könnte das Löschen von Event-Listeners oder anderen spezifischen Cleanup-Aktionen beinhalten
     }
+
+    window.mindwired.init({
+        el: "#mmap-root",
+        ui: {width: '100%', height: 500},
+    }).then((instance) => {
+        mwd = instance;
+        console.log("MindWired initialisiert");
+
+        // Laden der aktuellen MindMap, falls eine ID vorhanden ist
+        if (currentMindMapId) {
+            loadMindMapFromFirestore(currentMindMapId);
+        }
+    }).catch(error => {
+        console.error("Fehler bei der Initialisierung von MindWired:", error);
+    });
 }
 
 function loadMindMapFromFirestore(mindMapId) {
