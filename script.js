@@ -29,7 +29,7 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        initializeMindWired();
+        //initializeMindWired();
         showMindMapListPage();
     } else {
         console.log("No user is signed in.");
