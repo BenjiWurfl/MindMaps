@@ -169,10 +169,10 @@ function loadMindMapFromFirestore(mindMapId) {
             return;
         }
 
-        if (!mwd) {
-            console.error("MindWired-Instanz ist nicht initialisiert.");
-            return;
-        }
+        //if (!mwd) {
+        //    console.error("MindWired-Instanz ist nicht initialisiert.");
+        //    return;
+        //}
 
         let isNewMindMap = false;
         showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
