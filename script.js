@@ -105,7 +105,7 @@ function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = f
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
     if (mindMapData) {
-        if (isNewMindMap) {
+        if (isNewMindMap === true) {
             // Übergebene MindMap-Daten für eine neu erstellte MindMap laden
             mwd.nodes(mindMapData);
         } else if (currentMindMapId) {
