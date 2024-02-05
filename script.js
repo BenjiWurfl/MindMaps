@@ -78,7 +78,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            initializeMindWired();
+            //initializeMindWired();
             let isNewMindMap = true;
             showMindMapEditorPage(mindMapData, isNewMindMap);
         } catch (error) {
@@ -91,7 +91,7 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        initializeMindWired();
+        //initializeMindWired();
 
         if (currentMindMapId) {
             loadMindMapFromFirestore(currentMindMapId);
@@ -100,6 +100,7 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
+    initializeMindWired();
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
