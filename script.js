@@ -134,8 +134,8 @@ function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
 
 function initializeMindWired() {
     // Leeren des MindMap-Containers vor der Neuinitialisierung
-    //const mmapRoot = document.getElementById("mmap-root");
-    //mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
+    const mmapRoot = document.getElementById("mmap-root");
+    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
     window.mindwired.init({
         el: "#mmap-root",
