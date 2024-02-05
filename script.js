@@ -81,7 +81,8 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             currentMindMapId = docRef.id;
             // Leiten Sie den Benutzer direkt zum Editor mit den gerade erstellten Daten um
             initializeMindWired();
-            showMindMapEditorPage(mindMapData, true);
+            let isNewMindMap = true;
+            showMindMapEditorPage(mindMapData, isNewMindMap);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
@@ -100,7 +101,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
-function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = null) {
+function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
@@ -174,8 +175,8 @@ function loadMindMapFromFirestore(mindMapId) {
             return;
         }
 
-        // Übergebe das dritte Argument isNewMindMap=true, wenn die MindMap neu erstellt wurde
-        showMindMapEditorPage(doc.data().name, mindMapData, false);
+        let isNewMindMap = false;
+        showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
     }).catch(error => {
         console.error("Fehler beim Laden der MindMap:", error);
     });
