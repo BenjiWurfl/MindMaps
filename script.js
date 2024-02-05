@@ -100,7 +100,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
-function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = false) {
+function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
