@@ -80,7 +80,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
             // Leiten Sie den Benutzer direkt zum Editor mit den gerade erstellten Daten um
-            initializeMindWired();
+            //initializeMindWired();
             showMindMapEditorPage(mindMapName, defaultMindMapData);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
