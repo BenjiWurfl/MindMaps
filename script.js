@@ -81,7 +81,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             currentMindMapId = docRef.id;
             // Leiten Sie den Benutzer direkt zum Editor mit den gerade erstellten Daten um
             //initializeMindWired();
-            showMindMapEditorPage(mindMapName, defaultMindMapData);
+            showMindMapEditorPage(mindMapData);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
@@ -100,7 +100,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
-function showMindMapEditorPage(mindMapName, mindMapData = null) {
+function showMindMapEditorPage(mindMapName) {
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
