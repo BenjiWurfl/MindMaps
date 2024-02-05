@@ -102,7 +102,7 @@ function showMindMapEditorPage(mindMapName, mindMapData = null) {
     document.getElementById('mindmap-editor-page').style.display = 'block';
 
     if (mindMapData) {
-        mwd.nodes(mindMapData); // Lade die übergebenen MindMap-Daten in den Editor
+        //mwd.nodes(mindMapData); // Lade die übergebenen MindMap-Daten in den Editor
     } else if (currentMindMapId) {
         // Lade die MindMap-Daten aus Firestore, falls keine Daten übergeben wurden, aber eine ID vorhanden ist
         const mindMapDocRef = doc(db, "users", auth.currentUser.uid, "mindmaps", currentMindMapId);
