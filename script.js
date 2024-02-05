@@ -29,7 +29,6 @@ function redirectToLogin() {
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log("User is signed in with UID:", user.uid);
-        initializeMindWired();
         showMindMapListPage();
     } else {
         console.log("No user is signed in.");
@@ -79,7 +78,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            //initializeMindWired();
+            initializeMindWired();
             let isNewMindMap = true;
             showMindMapEditorPage(mindMapData, isNewMindMap);
         } catch (error) {
@@ -92,7 +91,7 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        //initializeMindWired();
+        initializeMindWired();
 
         if (currentMindMapId) {
             loadMindMapFromFirestore(currentMindMapId);
