@@ -78,7 +78,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            //initializeMindWired();
+            initializeMindWired();
             let isNewMindMap = true;
             showMindMapEditorPage(mindMapData, isNewMindMap);
         } catch (error) {
@@ -91,7 +91,7 @@ function navigateToMindMap(mindMapId) {
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
-        //initializeMindWired();
+        initializeMindWired();
 
         if (currentMindMapId) {
             loadMindMapFromFirestore(currentMindMapId);
@@ -100,7 +100,6 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
-    initializeMindWired();
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
@@ -135,8 +134,8 @@ function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
 
 function initializeMindWired() {
     // Leeren des MindMap-Containers vor der Neuinitialisierung
-    const mmapRoot = document.getElementById("mmap-root");
-    mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
+    //const mmapRoot = document.getElementById("mmap-root");
+    //mmapRoot.innerHTML = ''; // Entfernt alle Kinder des Containers
 
     window.mindwired.init({
         el: "#mmap-root",
@@ -169,11 +168,6 @@ function loadMindMapFromFirestore(mindMapId) {
             return;
         }
 
-        //if (!mwd) {
-        //    console.error("MindWired-Instanz ist nicht initialisiert.");
-        //    return;
-        //}
-
         let isNewMindMap = false;
         showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
     }).catch(error => {
@@ -182,7 +176,7 @@ function loadMindMapFromFirestore(mindMapId) {
 }
 
 function initializeDefaultMindMap() {
-    // Definiere die Struktur der Default-MindMap
+    // Definition der Struktur von der Default-MindMap
     const defaultMindMapStructure = {
         model: {
             type: "text",
@@ -334,7 +328,6 @@ function deleteMindMapFromFirestore() {
             .then(() => {
                 console.log("MindMap successfully deleted!");
                 currentMindMapId = null; // Zurücksetzen der MindMap-ID
-                // Hier sollten Sie auch die Darstellung der MindMap im Frontend zurücksetzen
             })
             .catch(error => {
                 console.error("Error removing mindmap: ", error);
