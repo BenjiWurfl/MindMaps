@@ -101,28 +101,37 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = false) {
+    console.log("Showing Mind Map Editor Page");
+    console.log("isNewMindMap state: ", isNewMindMap);
+    console.log("mindMapData state: ", mindMapData);
+
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
-
     if (mindMapData) {
         if (isNewMindMap === true) {
+            console.log("isNewMindMap state: ", isNewMindMap);
+            console.log("Loading Mind Map Data for a Newly Created Mind Map");
             // Übergebene MindMap-Daten für eine neu erstellte MindMap laden
             mwd.nodes(mindMapData);
+            console.log("mindMapData state: ", mindMapData);
         } else if (currentMindMapId) {
+            console.log("Loading Mind Map Data from Firestore");
             // Lade die MindMap-Daten aus Firestore, falls keine Daten übergeben wurden, aber eine ID vorhanden ist
             const mindMapDocRef = doc(db, "users", auth.currentUser.uid, "mindmaps", currentMindMapId);
             getDoc(mindMapDocRef).then(doc => {
                 if (doc.exists()) {
+                    console.log("MindMap Data Loaded Successfully:", doc.data().data);
                     mwd.nodes(doc.data().data);
                 } else {
-                    console.log("MindMap existiert nicht");
+                    console.log("MindMap Does Not Exist");
                 }
             }).catch(error => {
-                console.error("Fehler beim Laden der MindMap:", error);
+                console.error("Error Loading MindMap:", error);
             });
         }
     }
 }
+
 
 function initializeMindWired() {
     // Leeren des MindMap-Containers vor der Neuinitialisierung
