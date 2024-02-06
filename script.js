@@ -66,7 +66,7 @@ function updateMindMapListUI() {
 }
 
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
-    console.log("Aufruf der intializeMindWired Funktion");
+    console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     if (mindMapName && auth.currentUser) {
@@ -89,7 +89,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
 });
 
 function navigateToMindMap(mindMapId) {
-    console.log("Aufruf der intializeMindWired Funktion");
+    console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
@@ -101,7 +101,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
-function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = null) {
+function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
@@ -152,6 +152,7 @@ function initializeMindWired() {
 }
 
 function loadMindMapFromFirestore(mindMapId) {
+    console.log("--Aufruf der loadMindMapFromFirestore Funktion--");
     if (!auth.currentUser || !mindMapId) {
         console.log("Benutzer nicht angemeldet oder keine MindMap-ID angegeben.");
         return;
