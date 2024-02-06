@@ -202,7 +202,7 @@ h1 {
 }  
 
 .container {
-    margin: 10px auto;
+    /*margin: 10px auto; */
     max-width: 1300px;
 }
 
