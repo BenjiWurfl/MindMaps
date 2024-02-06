@@ -102,7 +102,6 @@ function navigateToMindMap(mindMapId) {
 }
 
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap = null) {
-    initializeMindWired();
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
