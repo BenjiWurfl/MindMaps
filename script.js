@@ -18,12 +18,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 let currentMindMapId = null;
 let mwd;
-let isMindMapLoaded = false;
 let mindMaps = [];
-
-function redirectToLogin() {
-    window.location.href = 'https://benjiwurfl.github.io/Login/';
-}
 
 // Authentifizierungsstatus beibehalten
 onAuthStateChanged(auth, (user) => {
@@ -36,12 +31,19 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+function redirectToLogin() {
+    window.location.href = 'https://benjiwurfl.github.io/Login/';
+}
+
+
+// Zeigt die MindMap-Liste an und versteckt die Editor-Seite
 function showMindMapListPage() {
     document.getElementById("mindmap-list-page").style.display = "block";
     document.getElementById("mindmap-editor-page").style.display = "none";
     loadMindMapList();
 }
 
+//Lädt die Liste der MindMaps des angemeldeten Benutzers aus Firestore
 function loadMindMapList() {
     const user = auth.currentUser;
     if (user) {
@@ -53,6 +55,7 @@ function loadMindMapList() {
     }
 }
 
+//Aktualisiert die Benutzeroberfläche der MindMap-Liste
 function updateMindMapListUI() {
     const listContainer = document.getElementById("mindmap-list");
     listContainer.innerHTML = '';
@@ -65,6 +68,7 @@ function updateMindMapListUI() {
     });
 }
 
+//Event-Listener für den Klick auf die Schaltfläche zum Erstellen einer neuen MindMap
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
@@ -80,13 +84,15 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            showMindMapEditorPage(mindMapName, defaultMindMapData, true);
+            let isNewMindMap = true;
+            showMindMapEditorPage(mindMapName, defaultMindMapData, isNewMindMap);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
     }
 });
 
+//Navigiert bei klicken zur entsprechenden MindMap
 function navigateToMindMap(mindMapId) {
     console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
@@ -100,6 +106,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
+//Schlüssel Funktion: Neu erstellte MindMap wird angezeigt und bereits vorhandene wird geladen
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
@@ -132,7 +139,7 @@ function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     }
 }
 
-
+//Initialisiert die MindWired Instanz (Aufruf der MindWired Library)
 function initializeMindWired() {
     // Leeren des MindMap-Containers vor der Neuinitialisierung
     const mmapRoot = document.getElementById("mmap-root");
@@ -150,6 +157,7 @@ function initializeMindWired() {
     });
 }
 
+//Lädt MindMap-Daten aus Firestore basierend auf der übergebenen MindMap-ID
 function loadMindMapFromFirestore(mindMapId) {
     console.log("--Aufruf der loadMindMapFromFirestore Funktion--");
     if (!auth.currentUser || !mindMapId) {
@@ -170,12 +178,14 @@ function loadMindMapFromFirestore(mindMapId) {
             return;
         }
 
-        showMindMapEditorPage(doc.data().name, doc.data().data, false);
+        let isNewMindMap = false;
+        showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
     }).catch(error => {
         console.error("Fehler beim Laden der MindMap:", error);
     });
 }
 
+//Initialisiert und gibt die Struktur der Standard-MindMap zurück
 function initializeDefaultMindMap() {
     // Definition der Struktur von der Default-MindMap
     const defaultMindMapStructure = {
@@ -271,7 +281,7 @@ function initializeDefaultMindMap() {
     return defaultMindMapStructure;
 }
 
-/* START: out of box code */
+//Event-Handler für den Export-Button: aktuelle MindMap exportiert und in einem Dimmer angezeigt
 const el = document.querySelector('.ctrl');
 el.addEventListener('click', (e) => {
     const { cmd } = e.target.dataset
@@ -283,13 +293,14 @@ el.addEventListener('click', (e) => {
         })
     }
 })
+
+//Event-Handler für den Close-Button: Dimmer wird wieder ausgeblendet
 const btnClose = document.querySelector('[data-cmd="close"]');
 btnClose.addEventListener('click', () => {
     document.querySelector('.dimmer').style.display = 'none'
 })
-/* END: out of box code */
 
-
+//Speichert die MindMap-Daten in der Firestore-Datenbank
 function saveMindMapToFirestore(mindMapData) {
     const user = auth.currentUser;
     if (!user) {
@@ -316,6 +327,7 @@ function saveMindMapToFirestore(mindMapData) {
     }
 }
 
+//Löscht die aktuelle MindMap aus der Firestore-Datenbank
 function deleteMindMapFromFirestore() {
     const user = auth.currentUser;
     if (!user) {
@@ -336,6 +348,7 @@ function deleteMindMapFromFirestore() {
     }
 }
 
+//Event-Listener für den "Back to list" Button
 document.getElementById('back-to-list').addEventListener('click', showMindMapListPage);
 
 // Event-Listener zum Speichern der MindMap
@@ -344,7 +357,6 @@ saveBtn.addEventListener('click', () => {
     mwd.export().then(json => {
         const mindMapData = JSON.parse(json);
         saveMindMapToFirestore({
-            //name: "Aktueller Name der MindMap", 
             data: mindMapData // Speichern der exportierten Daten
         });
     });
