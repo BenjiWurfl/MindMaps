@@ -147,7 +147,7 @@ function initializeMindWired() {
 
     window.mindwired.init({
         el: "#mmap-root",
-        ui: {width: '100%', height: 800},
+        ui: {width: 800, height: 800},
     }).then((instance) => {
         mwd = instance;
         console.log("MindWired initialisiert");
