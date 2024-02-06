@@ -106,6 +106,7 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
+//Zeigt den Namen der MindMap dynamisch im h1 an
 function setMindMapTitle(mindMapName) {
     const titleElement = document.querySelector('#mindmap-editor-page h1');
     if (titleElement) {
