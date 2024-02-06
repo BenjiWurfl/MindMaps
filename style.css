@@ -226,6 +226,15 @@ canvas {
     background-color: #ffffff;
 }
 
+.editor-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px; /* Optionaler Abstand */
+}
+
 /* START: Button für Bedienungshinweise */
 .action-button {
     position: absolute;
@@ -258,6 +267,7 @@ canvas {
     justify-content: center; /* Zentriert die Schaltflächen horizontal */
     align-items: center; /* Zentriert die Schaltflächen vertikal */
     gap: 10px; /* Definiert einen Abstand zwischen den Schaltflächen */
+    position: relative;
 }
 
 .mindmap-list-item {
