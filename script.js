@@ -106,11 +106,20 @@ function navigateToMindMap(mindMapId) {
     }
 }
 
+function setMindMapTitle(mindMapName) {
+    const titleElement = document.querySelector('#mindmap-editor-page h1');
+    if (titleElement) {
+        titleElement.textContent = mindMapName + ": Mind Map"; // Aktualisiert den Titel basierend auf dem MindMap-Namen
+    }
+}
+
 //Schlüssel Funktion: Neu erstellte MindMap wird angezeigt und bereits vorhandene wird geladen
 function showMindMapEditorPage(mindMapName, mindMapData = null, isNewMindMap) {
     console.log("Showing Mind Map Editor Page");
     console.log("isNewMindMap state: ", isNewMindMap);
     console.log("mindMapData state: ", mindMapData);
+
+    setMindMapTitle(mindMapName);
 
     document.getElementById('mindmap-list-page').style.display = 'none';
     document.getElementById('mindmap-editor-page').style.display = 'block';
