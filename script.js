@@ -66,6 +66,8 @@ function updateMindMapListUI() {
 }
 
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
+    console.log("Aufruf der intializeMindWired Funktion");
+    initializeMindWired();
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     if (mindMapName && auth.currentUser) {
         const defaultMindMapData = initializeDefaultMindMap();
@@ -87,6 +89,8 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
 });
 
 function navigateToMindMap(mindMapId) {
+    console.log("Aufruf der intializeMindWired Funktion");
+    initializeMindWired();
     const selectedMindMap = mindMaps.find(map => map.id === mindMapId);
     if (selectedMindMap) {
         currentMindMapId = selectedMindMap.id;
@@ -166,8 +170,6 @@ function loadMindMapFromFirestore(mindMapId) {
             console.error("MindMap-Daten sind undefiniert.");
             return;
         }
-        console.log("Aufruf der intializeMindWired Funktion");
-        //initializeMindWired();
 
         let isNewMindMap = false;
         showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
