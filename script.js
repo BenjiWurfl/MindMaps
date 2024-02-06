@@ -80,8 +80,7 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
             const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);
             console.log("Neue MindMap erstellt mit ID:", docRef.id);
             currentMindMapId = docRef.id;
-            let isNewMindMap = true;
-            showMindMapEditorPage(mindMapName, defaultMindMapData, isNewMindMap);
+            showMindMapEditorPage(mindMapName, defaultMindMapData, true);
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error);
         }
@@ -171,8 +170,7 @@ function loadMindMapFromFirestore(mindMapId) {
             return;
         }
 
-        let isNewMindMap = false;
-        showMindMapEditorPage(doc.data().name, mindMapData, isNewMindMap);
+        showMindMapEditorPage(doc.data().name, doc.data().data, false);
     }).catch(error => {
         console.error("Fehler beim Laden der MindMap:", error);
     });
