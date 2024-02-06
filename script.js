@@ -359,9 +359,20 @@ saveBtn.addEventListener('click', () => {
         saveMindMapToFirestore({
             data: mindMapData // Speichern der exportierten Daten
         });
+
+        // Alert beim Speichern
+        alert("MindMap erfolgreich gespeichert!");
     });
 });
 
 // Event-Listener zum Löschen der MindMap
 const deleteBtn = document.querySelector('[data-cmd="delete"]');
-deleteBtn.addEventListener('click', deleteMindMapFromFirestore);
+deleteBtn.addEventListener('click', () => {
+    // Vor dem Löschen einen Bestätigungs-Alert anzeigen
+    const confirmDelete = confirm("Möchten Sie diese MindMap wirklich löschen?");
+    if (confirmDelete) {
+        deleteMindMapFromFirestore();
+        // Alert nach dem Löschen
+        alert("MindMap erfolgreich gelöscht!");
+    }
+});
