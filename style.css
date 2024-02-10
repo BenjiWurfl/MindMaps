@@ -1,4 +1,4 @@
-/* START: out of box css*/
+/* Allgemeine Formatierungen */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
 html, body {
@@ -46,16 +46,18 @@ h1 {
         }
     }
 
+    /* Stile für die Bedienungshinweise */
+
     .help {
         position: absolute;
-        top: 40px; /* Abstand nach unten, entsprechend der Höhe des Buttons anpassen */
+        top: 40px; 
         right: 0;
         padding: 8px;
-        z-index: 100; /* Höherer z-Index als der action-button, damit es darüber schwebt */
-        background-color: white; /* Hintergrund weiß oder passend zum Design */
+        z-index: 100; 
+        background-color: white; 
         border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Einen leichten Schatten für den Schwebeeffekt */
-        visibility: hidden; /* Standardmäßig unsichtbar */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        visibility: hidden; 
         opacity: 0;
         transition: visibility 0.3s, opacity 0.3s ease-in-out;
 
@@ -125,7 +127,7 @@ h1 {
 }
 
 
-/* END: out of box css */
+/* Stil für das root Element der MindMap */
 
 #mmap-root {
     display: flex;
@@ -230,15 +232,15 @@ canvas {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px; /* Optionaler Abstand */
+    padding: 20px; 
 }
 
-/* START: Button für Bedienungshinweise */
+/* Button für Bedienungshinweise */
 .action-button {
     position: absolute;
     top: 16px;
     right: 16px;
-    z-index: 10; /* Höherer z-Index als .help */
+    z-index: 10; 
     padding: 8px;
     border: none;
     border-radius: 5px;
@@ -248,7 +250,7 @@ canvas {
     cursor: pointer;
     outline: none;
     transition: background-color 0.3s;
-    display: inline-block; /* Standardmäßig ausgeblendet */
+    display: inline-block; 
 }
 
 .action-button:hover {
@@ -256,15 +258,17 @@ canvas {
 }
 
 .action-button:hover + .help {
-    visibility: visible; /* Sichtbar machen, wenn der Button gehovert wird */
-    opacity: 1; /* Übergang zu voller Deckkraft */
+    visibility: visible; 
+    opacity: 1; 
 }
 
+/* EXPORT, SAVE und DELETE Button */
+
 .ctrl {
-    display: flex; /* Definiert ein flexibles Box-Layout für die Kind-Elemente */
-    justify-content: center; /* Zentriert die Schaltflächen horizontal */
-    align-items: center; /* Zentriert die Schaltflächen vertikal */
-    gap: 10px; /* Definiert einen Abstand zwischen den Schaltflächen */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
     margin-bottom: 20px;
 }
 
@@ -306,7 +310,7 @@ canvas {
   
   #mindmap-list-page .btn {
     margin-top: 20px;
-    align-self: flex-end; /* Positioniert den Button rechts unten */
+    align-self: flex-end; 
   }
   
   /* Stil für die MindMap-Editor-Seite */
@@ -315,9 +319,8 @@ canvas {
     display: none;
   }
   
-  /* Stil für den 'Zur Liste' Button anpassen */
   #back-to-list {
-    background-color: #4F46E5; /* Gleiche Farbe wie andere Buttons */
+    background-color: #4F46E5; 
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -325,11 +328,11 @@ canvas {
     cursor: pointer;
     outline: none;
     transition: background-color 0.3s;
-    position: absolute; /* Positionieren des Buttons */
-    top: 20px;         /* Abstand von oben */
-    left: 20px;       /* Abstand von rechts */
+    position: absolute; 
+    top: 20px;         
+    left: 20px;       
   }
   
   #back-to-list:hover {
-    background-color: #3730A3; /* Dunklere Farbe beim Hover, wie bei anderen Buttons */
+    background-color: #3730A3;
   }
