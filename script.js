@@ -76,7 +76,6 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
     // Überprüfung, ob ein Name eingegeben wurde
     if (mindMapName === "") {
         alert("Bitte geben Sie einen Namen für die MindMap ein."); 
-        return; 
     }
 
     if (mindMapName && auth.currentUser) {
