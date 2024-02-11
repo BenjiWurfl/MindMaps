@@ -94,8 +94,6 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error); 
         }
-    } else if (!mindMapName) {
-        alert("Die Erstellung einer neuen MindMap wurde abgebrochen.");     // Wenn der Benutzer das Prompt mit Abbrechen schließt oder keine Eingabe macht
     }
 });
 
