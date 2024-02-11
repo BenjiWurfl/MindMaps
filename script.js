@@ -72,26 +72,29 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
     console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
     let mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
-    while (!mindMapName) { // Wiederholt die Aufforderung, bis ein Name eingegeben wird
+    while (mindMapName === "") { // Prüft, ob der Eingabestring leer ist
         alert("Bitte geben Sie einen Namen für die MindMap ein."); 
-        mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
+        mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:"); 
+    }
+    if (mindMapName === null) { // Prüft, ob der Benutzer auf "Abbrechen" geklickt hat
+        return; 
     }
     if (mindMapName && auth.currentUser) {
-        const defaultMindMapData = initializeDefaultMindMap(); // Ruft die Standard-MindMap-Struktur ab
-        const mindMapData = { // Erstellt ein Objekt für die neue MindMap mit dem eingegebenen Namen und den Standarddaten
+        const defaultMindMapData = initializeDefaultMindMap();
+        const mindMapData = {
             name: mindMapName,
             data: defaultMindMapData
         };
 
         try {
-            const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData); 
-            console.log("Neue MindMap erstellt mit ID:", docRef.id); 
-            currentMindMapId = docRef.id; // Aktualisiert die aktuelle MindMap-ID mit der ID der neu erstellten MindMap
-            let isNewMindMap = true; 
-            showMindMapEditorPage(mindMapName, defaultMindMapData, isNewMindMap); 
+            const docRef = await addDoc(collection(db, "users", auth.currentUser.uid, "mindmaps"), mindMapData);    // Fügt eine neue MindMap zur Firestore-Datenbank des aktuellen Benutzers hinzu
+            console.log("Neue MindMap erstellt mit ID:", docRef.id);
+            currentMindMapId = docRef.id;
+            let isNewMindMap = true;
+            showMindMapEditorPage(mindMapName, defaultMindMapData, isNewMindMap);
         } catch (error) {
-            console.error("Fehler beim Erstellen der MindMap:", error); 
-        }
+            console.error("Fehler beim Erstellen der MindMap:", error);
+        }   
     }
 });
 
