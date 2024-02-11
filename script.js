@@ -72,6 +72,13 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
     console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired(); 
     const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:"); 
+
+    // Überprüfung, ob ein Name eingegeben wurde
+    if (mindMapName === "") {
+        alert("Bitte geben Sie einen Namen für die MindMap ein."); 
+        return; 
+    }
+
     if (mindMapName && auth.currentUser) {
         const defaultMindMapData = initializeDefaultMindMap(); // Ruft die Standard-MindMap-Struktur ab
         const mindMapData = { // Erstellt ein Objekt für die neue MindMap mit dem eingegebenen Namen und den Standarddaten
@@ -88,6 +95,8 @@ document.getElementById('create-new-mindmap').addEventListener('click', async ()
         } catch (error) {
             console.error("Fehler beim Erstellen der MindMap:", error); 
         }
+    } else if (!mindMapName) {
+        alert("Die Erstellung einer neuen MindMap wurde abgebrochen.");     // Wenn der Benutzer das Prompt mit Abbrechen schließt oder keine Eingabe macht
     }
 });
 
