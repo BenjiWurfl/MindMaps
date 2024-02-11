@@ -68,16 +68,14 @@ function updateMindMapListUI() {
 }
 
 //Event-Listener für den Klick auf die Schaltfläche zum Erstellen einer neuen MindMap
-document.getElementById('create-new-mindmap').addEventListener('click', async () => { 
+document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     console.log("--Aufruf der intializeMindWired Funktion--");
-    initializeMindWired(); 
-    const mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:"); 
-
-    // Überprüfung, ob ein Name eingegeben wurde
-    if (mindMapName === "") {
+    initializeMindWired();
+    let mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
+    while (!mindMapName) { // Wiederholt die Aufforderung, bis ein Name eingegeben wird
         alert("Bitte geben Sie einen Namen für die MindMap ein."); 
+        mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
     }
-
     if (mindMapName && auth.currentUser) {
         const defaultMindMapData = initializeDefaultMindMap(); // Ruft die Standard-MindMap-Struktur ab
         const mindMapData = { // Erstellt ein Objekt für die neue MindMap mit dem eingegebenen Namen und den Standarddaten
