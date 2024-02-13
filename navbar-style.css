@@ -291,6 +291,7 @@ body.dark .switch::before{
     width: calc(100% - 250px);
     background-color: var(--body-color);
     transition: var(--tran-05);
+    height: 100vh;
 }
 .home .text{
     font-size: 30px;
