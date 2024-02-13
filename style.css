@@ -204,7 +204,6 @@ h1 {
 .container {
     margin: 50px auto; 
     max-width: 1300px;
-    height: 100vh;
 }
 
 .btn {
@@ -285,42 +284,44 @@ canvas {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+    height: 100vh;
+}
   
-  #mindmap-list {
+#mindmap-list {
     width: 100%;
     max-width: 600px;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
+}
   
-  #mindmap-list div {
+#mindmap-list div {
     padding: 10px;
     background-color: #EDF2F7;
     border-radius: 5px;
     border: 1px solid #CBD5E0;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
+}
   
-  #mindmap-list div:hover {
+#mindmap-list div:hover {
     background-color: #E2E8F0;
-  }
+}
   
-  #mindmap-list-page .btn {
+#mindmap-list-page .btn {
     margin-top: 20px;
     align-self: flex-end; 
-  }
+}
   
-  /* Stil für die MindMap-Editor-Seite */
-  #mindmap-editor-page {
+/* Stil für die MindMap-Editor-Seite */
+#mindmap-editor-page {
     top: 20px;
     display: none;
-  }
+    height: 100vh;
+}
   
-  #back-to-list {
+#back-to-list {
     background-color: #4F46E5; 
     color: white;
     padding: 10px 20px;
@@ -332,8 +333,8 @@ canvas {
     position: absolute; 
     top: 20px;         
     left: 20px;       
-  }
+}
   
-  #back-to-list:hover {
+#back-to-list:hover {
     background-color: #3730A3;
-  }
+}
