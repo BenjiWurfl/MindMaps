@@ -9,7 +9,7 @@
 
 :root{
     /* ===== Colors ===== */
-    --body-color: #ffffff;
+    --body-color: #E4E9F7;
     --sidebar-color: #FFF;
     --primary-color: #4F46E5;
     --primary-color-light: #F6F5FF;
@@ -48,7 +48,7 @@ body.dark{
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 100%;
     width: 250px;
     padding: 10px 14px;
     background: var(--sidebar-color);
@@ -291,8 +291,8 @@ body.dark .switch::before{
     width: calc(100% - 250px);
     background-color: var(--body-color);
     transition: var(--tran-05);
-    height: 100vh;
 }
+
 .home .text{
     font-size: 30px;
     font-weight: 500;
@@ -305,6 +305,7 @@ body.dark .switch::before{
     height: 100vh;
     width: calc(100% - 78px);
 }
+
 body.dark .home .text{
     color: var(--text-color);
 }
