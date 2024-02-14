@@ -281,11 +281,18 @@ canvas {
 }
 
 /* Stil für die MindMap-Listenseite */
-#mindmap-list-page {
+#mindmap-list-page,
+#mindmap-editor-page {
+    position: absolute;
+    top: 0;
+    left: 250px;
+    height: 100vh;
+    width: calc(100% - 250px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
 }
   
 #mindmap-list {
@@ -317,9 +324,7 @@ canvas {
   
 /* Stil für die MindMap-Editor-Seite */
 #mindmap-editor-page {
-    top: 20px;
     display: none;
-    height: 100vh;
 }
   
 #back-to-list {
