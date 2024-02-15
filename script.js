@@ -350,6 +350,10 @@ function deleteMindMapFromFirestore() {
             .then(() => {
                 console.log("MindMap successfully deleted!"); 
                 currentMindMapId = null; 
+
+                showMindMapListPage();
+
+                alert("MindMap erfolgreich gelöscht!");     // Alert nach dem Löschen
             })
             .catch(error => {
                 console.error("Error removing mindmap: ", error); 
@@ -381,8 +385,6 @@ deleteBtn.addEventListener('click', () => {
     const confirmDelete = confirm("Möchten Sie diese MindMap wirklich löschen?");
     if (confirmDelete) {
         deleteMindMapFromFirestore();
-        // Alert nach dem Löschen
-        alert("MindMap erfolgreich gelöscht!");
     }
 });
 
