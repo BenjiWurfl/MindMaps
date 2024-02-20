@@ -103,6 +103,21 @@
     </div>
 </nav>
 
+<script>
+  // Script-Code für die Navbar
+  const logoutLink = document.querySelector('.nav-link.logout');
+  
+  logoutLink.addEventListener('click', () => {
+      signOut(auth)
+          .then(() => {
+              window.location.href = "https://benjiwurfl.github.io/Login/";
+          })
+          .catch((error) => {
+              console.error("Logout Error: ", error);
+          });
+  });
+  </script>
+
 <!-- MindMap Container -->
 <section class="home">
   <div class="container">
