@@ -81,7 +81,7 @@
 
         <div class="bottom-content">
             <li class="nav-link logout">
-                <a href="#">
+                <a href="https://thinkwisenotes.webflow.io/">
                     <i class='bx bx-log-out icon' ></i>
                     <span class="text nav-text">Logout</span>
                 </a>
@@ -102,21 +102,6 @@
         </div>
     </div>
 </nav>
-
-<script>
-  // Script-Code für die Navbar
-  const logoutLink = document.querySelector('.nav-link.logout');
-  
-  logoutLink.addEventListener('click', () => {
-      signOut(auth)
-          .then(() => {
-              window.location.href = "https://benjiwurfl.github.io/Login/";
-          })
-          .catch((error) => {
-              console.error("Logout Error: ", error);
-          });
-  });
-  </script>
 
 <!-- MindMap Container -->
 <section class="home">
