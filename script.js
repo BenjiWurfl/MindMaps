@@ -61,7 +61,7 @@ function updateMindMapListUI() {
     listContainer.innerHTML = '';
     mindMaps.forEach(mindMap => { 
         const listItem = document.createElement("div"); 
-        listItem.textContent = mindMap.data.name || "Unbenannte MindMap"; // Setzt den Text des Elements auf den Namen der MindMap, oder einen Platzhalter, wenn kein Name vorhanden ist
+        listItem.textContent = mindMap.data.name || "Unnamed MindMap"; // Setzt den Text des Elements auf den Namen der MindMap, oder einen Platzhalter, wenn kein Name vorhanden ist
         listItem.addEventListener("click", () => navigateToMindMap(mindMap.id)); 
         listContainer.appendChild(listItem); // Fügt das neu erstellte Element zum Container hinzu
     });
@@ -71,10 +71,10 @@ function updateMindMapListUI() {
 document.getElementById('create-new-mindmap').addEventListener('click', async () => {
     console.log("--Aufruf der intializeMindWired Funktion--");
     initializeMindWired();
-    let mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:");
+    let mindMapName = prompt("Enter the name for the new MindMap:");
     while (mindMapName === "") { // Prüft, ob der Eingabestring leer ist
-        alert("Bitte geben Sie einen Namen für die MindMap ein."); 
-        mindMapName = prompt("Bitte geben Sie den Namen der neuen MindMap ein:"); 
+        alert("Please enter a name for the MindMap."); 
+        mindMapName = prompt("Enter the name for the new MindMap:"); 
     }
     if (mindMapName === null) { // Prüft, ob der Benutzer auf "Abbrechen" geklickt hat
         return; 
@@ -353,7 +353,7 @@ function deleteMindMapFromFirestore() {
 
                 showMindMapListPage();
 
-                alert("MindMap erfolgreich gelöscht!");     // Alert nach dem Löschen
+                alert("MindMap successfully deleted!");     // Alert nach dem Löschen
             })
             .catch(error => {
                 console.error("Error removing mindmap: ", error); 
@@ -374,7 +374,7 @@ saveBtn.addEventListener('click', () => {
         });
 
         // Alert beim Speichern
-        alert("MindMap erfolgreich gespeichert!");
+        alert("MindMap successfully saved!");
     });
 });
 
@@ -382,7 +382,7 @@ saveBtn.addEventListener('click', () => {
 const deleteBtn = document.querySelector('[data-cmd="delete"]');
 deleteBtn.addEventListener('click', () => {
     // Vor dem Löschen einen Bestätigungs-Alert anzeigen
-    const confirmDelete = confirm("Möchten Sie diese MindMap wirklich löschen?");
+    const confirmDelete = confirm("Are you sure you want to delete this MindMap?");
     if (confirmDelete) {
         deleteMindMapFromFirestore();
     }
